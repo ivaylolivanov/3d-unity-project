@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float movementSpeed = 4f;
+    [SerializeField] private float movementSpeed = 8f;
 
     private float horizontalInput;
     private float verticalInput;
@@ -24,7 +24,7 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        Vector3 movement = new Vector3(verticalInput, 0f, horizontalInput)
+        Vector3 movement = new Vector3(horizontalInput, 0f, verticalInput)
             * movementSpeed;
 
         rb.velocity = movement;
