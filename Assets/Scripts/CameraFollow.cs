@@ -4,47 +4,43 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    public float smoothness;
-    public Transform targetObject;
-    private Vector3 initalOffset;
-    private Vector3 cameraPosition;
+    [SerializeField] private float smoothness = 0.125f;
+    [SerializeField] private Vector3 offset = new Vector3(-5, 10, 0);
 
-    public enum RelativePosition { InitalPosition, Position1, Position2 }
-    public RelativePosition relativePosition;
-    public Vector3 position1;
-    public Vector3 position2;
+    private Transform target;
+    private Vector3 smoothVelocity = Vector3.zero;
 
-    void Start()
+    void Awake()
     {
-        relativePosition = RelativePosition.InitalPosition;
-        initalOffset = transform.position - targetObject.position;
-    }
+        var player = FindObjectOfType<PlayerMovement>();
 
-    void FixedUpdate()
-    {
-        cameraPosition = targetObject.position + CameraOffset(relativePosition);
-        transform.position = Vector3.Lerp(transform.position, cameraPosition, smoothness*Time.fixedDeltaTime);
-        transform.LookAt(targetObject);
-    }
-
-    Vector3 CameraOffset(RelativePosition relativePos)
-    {
-        Vector3 currentOffset;
-
-        switch (relativePos)
+        if (player == null)
         {
-            case RelativePosition.Position1:
-                currentOffset = position1;
-                break;
-
-            case RelativePosition.Position2:
-                currentOffset = position2;
-                break;
-
-            default:
-                currentOffset = initalOffset;
-                break;
+            Debug.LogError("Failed to find player to follow.");
+            return;
         }
-        return currentOffset;
+
+        target = player.transform;
+    }
+
+    void LateUpdate()
+    {
+        if (target == null)
+        {
+            Debug.LogError("Lost player.");
+            return;
+        }
+
+        var desiredPosition = target.position + offset;
+        var smoothedPosition = Vector3.SmoothDamp(
+            transform.position,
+            desiredPosition,
+            ref smoothVelocity,
+            smoothness
+        );
+
+        transform.position = smoothedPosition;
+
+        transform.LookAt(target);
     }
 }
