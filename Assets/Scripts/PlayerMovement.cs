@@ -7,13 +7,18 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] private float _movementSpeed = 8f;
+    [SerializeField] private float _drag = 6f;
 
-    [Header("Rotation")]
-    [SerializeField] private float _rotationSmoothTime = 0.1f;
-    [SerializeField] private float _rotationSpeed = 50f;
+    [Header("Jump")]
+    [SerializeField] private float _jumpForce = 10f;
+
+    // [Header("Rotation")]
+    // [SerializeField] private float _rotationSmoothTime = 0.1f;
+    // [SerializeField] private float _rotationSpeed = 50f;
 
     private float _horizontalInput;
     private float _verticalInput;
+    private bool _jumpKeyPressed;
 
     private Camera mainCamera;
 
@@ -23,39 +28,41 @@ public class PlayerMovement : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         if (_rb == null)
+        {
             Debug.LogError($"Failed to get rigidbody in {gameObject.name}");
+        }
+        else
+        {
+            _rb.freezeRotation = true;
+            _rb.drag = _drag;
+        }
 
         mainCamera = Camera.main;
+        _jumpKeyPressed = false;
     }
 
     void Update()
     {
         _horizontalInput = Input.GetAxis("Horizontal");
         _verticalInput = Input.GetAxis("Vertical");
+        _jumpKeyPressed = Input.GetKey(KeyCode.Space);
     }
 
     void FixedUpdate()
     {
-        if(_horizontalInput == 0 && _verticalInput == 0)
-            return;
+        Vector3 movementDirection = new Vector3(
+            _horizontalInput,
+            _rb.velocity.y,
+            _verticalInput
+        );
 
-        Vector3 movement = new Vector3(_horizontalInput, 0f, _verticalInput)
+        if(_jumpKeyPressed)
+            Debug.Log($"Appliying {_jumpForce} force units");
+
+        Vector3 movement = movementDirection.normalized
             * _movementSpeed
             * Time.fixedDeltaTime;
 
-        float targetAngle = Mathf.Atan2(movement.x, movement.z)
-            * Mathf.Rad2Deg + mainCamera.transform.eulerAngles.y;
-        float refRotationSmoothVelocity = _rotationSmoothTime;
-        float angle = Mathf.SmoothDampAngle(
-            transform.eulerAngles.y,
-            targetAngle,
-            ref refRotationSmoothVelocity,
-            _rotationSmoothTime
-        );
-
-        Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-
-        _rb.MovePosition(_rb.position + moveDirection.normalized * _movementSpeed * Time.fixedDeltaTime);
-        _rb.MoveRotation(Quaternion.Euler(0f, angle, 0f));
+        _rb.MovePosition(_rb.position + movement);
     }
 }
