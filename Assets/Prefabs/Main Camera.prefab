@@ -97,4 +97,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   smoothness: 0.125
-  offset: {x: -0.5, y: 4, z: -8}
+  offset: {x: 0, y: 10, z: -10}
