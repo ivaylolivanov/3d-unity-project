@@ -59,10 +59,8 @@ public class PlayerMovement : MonoBehaviour
         // if(_jumpKeyPressed)
             // movementDirection += Vector3.up * _jumpForce;
 
-        Vector3 movement = movementDirection.normalized
-            * _movementSpeed
-            * Time.fixedDeltaTime;
+        Vector3 movement = movementDirection * _movementSpeed;
 
-        _rb.MovePosition(_rb.position + movement);
+        _rb.velocity = movement;
     }
 }
