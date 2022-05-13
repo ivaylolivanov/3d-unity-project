@@ -56,8 +56,8 @@ public class PlayerMovement : MonoBehaviour
             _verticalInput
         );
 
-        if(_jumpKeyPressed)
-            Debug.Log($"Appliying {_jumpForce} force units");
+        // if(_jumpKeyPressed)
+            // movementDirection += Vector3.up * _jumpForce;
 
         Vector3 movement = movementDirection.normalized
             * _movementSpeed
