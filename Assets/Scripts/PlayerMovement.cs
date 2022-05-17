@@ -18,10 +18,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private KeyCode _jumpKeyCode = KeyCode.Space;
     [SerializeField] private float _jumpForce = 10f;
 
-    // [Header("Rotation")]
-    // [SerializeField] private float _rotationSmoothTime = 0.1f;
-    // [SerializeField] private float _rotationSpeed = 50f;
-
     private float _horizontalInput;
     private float _verticalInput;
     private bool _jumpKeyPressed;
