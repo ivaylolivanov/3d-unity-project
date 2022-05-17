@@ -5,9 +5,14 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("Stats")]
+    [SerializeField] private bool _freezeRotation = true;
+    [SerializeField] private float _mass = 10f;
+    [SerializeField] private float _drag = 6f;
+    [SerializeField] private float _fallSpeed = 10f;
+
     [Header("Movement")]
     [SerializeField] private float _movementSpeed = 8f;
-    [SerializeField] private float _drag = 6f;
 
     [Header("Jump")]
     [SerializeField] private KeyCode _jumpKeyCode = KeyCode.Space;
@@ -34,7 +39,8 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            _rb.freezeRotation = true;
+            _rb.freezeRotation = _freezeRotation;
+            _rb.mass = _mass;
             _rb.drag = _drag;
         }
 
@@ -44,25 +50,29 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        _horizontalInput = Input.GetAxis("Horizontal");
-        _verticalInput = Input.GetAxis("Vertical");
-        _jumpKeyPressed = Input.GetKey(KeyCode.Space);
+        ReadInputs();
     }
 
     void FixedUpdate()
+    {
+        AdjustFallingSpeed();
+        Move();
+
         if (_jumpKeyPressed)
             Jump();
+    }
+
+    private void Move()
     {
         Vector3 movementDirection = new Vector3(
-            _horizontalInput,
+            _horizontalInput * _movementSpeed,
             _rb.velocity.y,
-            _verticalInput
+            _verticalInput * _movementSpeed
         );
 
-        // if(_jumpKeyPressed)
-            // movementDirection += Vector3.up * _jumpForce;
+        _rb.velocity = movementDirection;
+    }
 
-        Vector3 movement = movementDirection * _movementSpeed;
     private void Jump()
     {
         Vector3 velocity = _rb.velocity;
@@ -70,6 +80,16 @@ public class PlayerMovement : MonoBehaviour
         _rb.velocity = new Vector3(_rb.velocity.x, _jumpForce, _rb.velocity.z);
     }
 
-        _rb.velocity = movement;
+    private void AdjustFallingSpeed()
+    {
+        if (_rb.velocity.y < 0)
+            _rb.velocity = Vector3.down * _fallSpeed;
+    }
+
+    private void ReadInputs()
+    {
+        _horizontalInput = Input.GetAxis("Horizontal");
+        _verticalInput = Input.GetAxis("Vertical");
+        _jumpKeyPressed = Input.GetKey(_jumpKeyCode);
     }
 }
