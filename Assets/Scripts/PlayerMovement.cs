@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _drag = 6f;
 
     [Header("Jump")]
+    [SerializeField] private KeyCode _jumpKeyCode = KeyCode.Space;
     [SerializeField] private float _jumpForce = 10f;
 
     // [Header("Rotation")]
@@ -49,6 +50,8 @@ public class PlayerMovement : MonoBehaviour
     }
 
     void FixedUpdate()
+        if (_jumpKeyPressed)
+            Jump();
     {
         Vector3 movementDirection = new Vector3(
             _horizontalInput,
@@ -60,6 +63,12 @@ public class PlayerMovement : MonoBehaviour
             // movementDirection += Vector3.up * _jumpForce;
 
         Vector3 movement = movementDirection * _movementSpeed;
+    private void Jump()
+    {
+        Vector3 velocity = _rb.velocity;
+        velocity.y = _jumpForce;
+        _rb.velocity = new Vector3(_rb.velocity.x, _jumpForce, _rb.velocity.z);
+    }
 
         _rb.velocity = movement;
     }
