@@ -26,7 +26,20 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody _rb;
 
-    void Awake()
+    void OnEnable() =>Initialize();
+
+    void Update() => ReadInputs();
+
+    void FixedUpdate()
+    {
+        AdjustFallingSpeed();
+        Move();
+
+        if (_jumpKeyPressed)
+            Jump();
+    }
+
+    private void Initialize()
     {
         _rb = GetComponent<Rigidbody>();
         if (_rb == null)
@@ -42,20 +55,6 @@ public class PlayerMovement : MonoBehaviour
 
         mainCamera = Camera.main;
         _jumpKeyPressed = false;
-    }
-
-    void Update()
-    {
-        ReadInputs();
-    }
-
-    void FixedUpdate()
-    {
-        AdjustFallingSpeed();
-        Move();
-
-        if (_jumpKeyPressed)
-            Jump();
     }
 
     private void Move()
