@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Jump")]
     [SerializeField] private KeyCode _jumpKeyCode = KeyCode.Space;
+    [SerializeField] private float _groundCheckDistance = 0.1f;
     [SerializeField] private float _jumpForce = 10f;
 
     private float _horizontalInput;
@@ -32,10 +33,12 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        bool isOnGround = IsOnGround();
+
         AdjustFallingSpeed();
         Move();
 
-        if (_jumpKeyPressed)
+        if (_jumpKeyPressed && isOnGround)
             Jump();
     }
 
@@ -79,6 +82,11 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_rb.velocity.y < 0)
             _rb.velocity = Vector3.down * _fallSpeed;
+    }
+
+    private bool IsOnGround()
+    {
+        return Physics.Raycast(transform.position, -transform.up, _groundCheckDistance);
     }
 
     private void ReadInputs()
