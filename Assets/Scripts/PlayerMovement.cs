@@ -103,4 +103,11 @@ public class PlayerMovement : MonoBehaviour
         _verticalInput = Input.GetAxis("Vertical");
         _jumpKeyPressed = Input.GetKey(_jumpKeyCode);
     }
+
+    void OnDrawGizmos()
+    {
+        // Draw a yellow sphere at the transform's position
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(_groundCheckPoint.position, _groundCheckRadius);
+    }
 }
