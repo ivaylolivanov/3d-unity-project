@@ -16,7 +16,9 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Jump")]
     [SerializeField] private KeyCode _jumpKeyCode = KeyCode.Space;
-    [SerializeField] private float _groundCheckDistance = 0.1f;
+    [SerializeField] private int _groundCheckLayer;
+    [SerializeField] private Transform _groundCheckPoint;
+    [SerializeField] private float _groundCheckRadius = 0.5f;
     [SerializeField] private float _jumpForce = 10f;
 
     private float _horizontalInput;
@@ -86,7 +88,13 @@ public class PlayerMovement : MonoBehaviour
 
     private bool IsOnGround()
     {
-        return Physics.Raycast(transform.position, -transform.up, _groundCheckDistance);
+        bool result = Physics.CheckSphere(
+            _groundCheckPoint.position,
+            _groundCheckRadius,
+            _groundCheckLayer
+        );
+
+        return result;
     }
 
     private void ReadInputs()
