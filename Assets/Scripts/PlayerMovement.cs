@@ -29,7 +29,7 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody _rb;
 
-    void OnEnable() =>Initialize();
+    void OnEnable() => Initialize();
 
     void Update() => ReadInputs();
 
