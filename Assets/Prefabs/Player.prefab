@@ -178,7 +178,7 @@ MonoBehaviour:
   _mass: 10
   _drag: 6
   _fallSpeed: 10
-  _movementSpeed: 15
+  _movementSpeed: 10
   _jumpKeyCode: 32
   _groundCheckLayer: 64
   _groundCheckPoint: {fileID: 8052586934207936867}
