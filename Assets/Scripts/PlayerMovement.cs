@@ -62,6 +62,12 @@ public class PlayerMovement : MonoBehaviour
         _jumpKeyPressed = false;
     }
 
+    private void AdjustFallingSpeed()
+    {
+        if (_rb.velocity.y < 0)
+            _rb.velocity = Vector3.down * _fallSpeed;
+    }
+
     private void Move()
     {
         Vector3 movementDirection = new Vector3(
@@ -78,12 +84,6 @@ public class PlayerMovement : MonoBehaviour
         Vector3 velocity = _rb.velocity;
         velocity.y = _jumpForce;
         _rb.velocity = new Vector3(_rb.velocity.x, _jumpForce, _rb.velocity.z);
-    }
-
-    private void AdjustFallingSpeed()
-    {
-        if (_rb.velocity.y < 0)
-            _rb.velocity = Vector3.down * _fallSpeed;
     }
 
     private bool IsOnGround()
