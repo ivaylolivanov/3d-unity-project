@@ -40,7 +40,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6281192369756096288}
   m_Layer: 0
-  m_Name: FirePoint
+  m_Name: ShootPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -215,6 +215,10 @@ MonoBehaviour:
   _groundCheckPoint: {fileID: 8052586934207936867}
   _groundCheckRadius: 0.2
   _jumpForce: 10
+  _shootPoint: {fileID: 6281192369756096288}
+  _shootInterval: 0.2
+  _shootKeyCode: 323
+  _bulletPrefabTemplate: {fileID: 4027143953485845044, guid: a95fbcb1381f9d09d87770ec59b35449, type: 3}
 --- !u!54 &1646453727117071930
 Rigidbody:
   m_ObjectHideFlags: 0
