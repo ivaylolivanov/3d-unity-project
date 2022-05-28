@@ -45,8 +45,8 @@ public class PlayerMovement : MonoBehaviour
     {
         bool isOnGround = IsOnGround();
 
-        RotateToMouse();
         AdjustFallingSpeed();
+        RotateToMouse();
         Move();
 
         if (_jumpKeyPressed && isOnGround)
