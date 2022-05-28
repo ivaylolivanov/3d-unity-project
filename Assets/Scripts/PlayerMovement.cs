@@ -22,6 +22,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _groundCheckRadius = 0.5f;
     [SerializeField] private float _jumpForce = 10f;
 
+    [Header("Shooting")]
+    [SerializeField] private Transform _shootPoint;
+    [SerializeField] private float _shootInterval = 0.2f;
+    [SerializeField] private KeyCode _shootKeyCode = KeyCode.Mouse0;
+    [SerializeField] private Transform _bulletPrefabTemplate;
+
     // Movement
     private float _horizontalInput;
     private float _verticalInput;
@@ -32,6 +38,10 @@ public class PlayerMovement : MonoBehaviour
     // Mouse inputs
     private Vector3 _mousePosition;
     private Vector3 _mouseWorldPosition;
+
+    // Shooting
+    private bool _shootKeyPressed;
+    private float _nextShootTime;
 
     private Camera mainCamera;
 
@@ -51,6 +61,9 @@ public class PlayerMovement : MonoBehaviour
 
         if (_jumpKeyPressed && isOnGround)
             Jump();
+
+        if (_shootKeyPressed && (Time.time >= _nextShootTime))
+            Shoot();
     }
 
     private void Initialize()
@@ -69,6 +82,10 @@ public class PlayerMovement : MonoBehaviour
 
         mainCamera = Camera.main;
         _jumpKeyPressed = false;
+        _shootKeyPressed = false;
+        _nextShootTime = 0;
+    }
+
     private void AdjustFallingSpeed()
     {
         if (_rb.velocity.y < 0)
@@ -121,6 +138,15 @@ public class PlayerMovement : MonoBehaviour
         _rb.velocity = new Vector3(_rb.velocity.x, _jumpForce, _rb.velocity.z);
     }
 
+    private void Shoot()
+    {
+        Transform bullet = Instantiate(_bulletPrefabTemplate, transform);
+        Rigidbody bulletRigidbody = bullet.GetComponent<Rigidbody>();
+        bulletRigidbody.AddForce(_shootPoint.forward * 100, ForceMode.Impulse);
+
+        _nextShootTime = Time.time + _shootInterval;
+    }
+
     private bool IsOnGround()
     {
         bool result = Physics.CheckSphere(
@@ -144,6 +170,8 @@ public class PlayerMovement : MonoBehaviour
 
         if (Physics.Raycast(mouseWorldRay, out RaycastHit raycastHit))
             _mouseWorldPosition = raycastHit.point;
+
+        _shootKeyPressed = Input.GetKey(_shootKeyCode);
     }
 
     void OnDrawGizmos()
