@@ -22,9 +22,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _groundCheckRadius = 0.5f;
     [SerializeField] private float _jumpForce = 10f;
 
+    // Movement
     private float _horizontalInput;
     private float _verticalInput;
+
+    // Jump
     private bool _jumpKeyPressed;
+
+    // Mouse inputs
     private Vector3 _mousePosition;
     private Vector3 _mouseWorldPosition;
 
