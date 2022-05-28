@@ -172,13 +172,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3ab03e145269261d8b2696530d1286ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   _freezeRotation: 1
   _mass: 10
   _drag: 6
   _fallSpeed: 10
-  _movementSpeed: 10
+  _movementSpeed: 15
+  _rotateToMouseScale: 3.5
   _jumpKeyCode: 32
   _groundCheckLayer: 64
   _groundCheckPoint: {fileID: 8052586934207936867}

@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField] private float _movementSpeed = 8f;
+    [SerializeField] private float _rotateToMouseScale = 3f;
 
     [Header("Jump")]
     [SerializeField] private KeyCode _jumpKeyCode = KeyCode.Space;
@@ -24,6 +25,8 @@ public class PlayerMovement : MonoBehaviour
     private float _horizontalInput;
     private float _verticalInput;
     private bool _jumpKeyPressed;
+    private Vector3 _mousePosition;
+    private Vector3 _mouseWorldPosition;
 
     private Camera mainCamera;
 
@@ -37,6 +40,7 @@ public class PlayerMovement : MonoBehaviour
     {
         bool isOnGround = IsOnGround();
 
+        RotateToMouse();
         AdjustFallingSpeed();
         Move();
 
@@ -60,6 +64,34 @@ public class PlayerMovement : MonoBehaviour
 
         mainCamera = Camera.main;
         _jumpKeyPressed = false;
+    }
+
+    private void RotateToMouse()
+    {
+        Vector3 playerToMouseDirection = _mouseWorldPosition - _rb.position;
+        float angle = Vector3.SignedAngle(
+            transform.forward,
+            playerToMouseDirection,
+            transform.up
+        );
+
+        Quaternion targetRotation = Quaternion.LookRotation(
+            playerToMouseDirection,
+            transform.up
+        );
+
+        // Do rotation ONLY around the Y axis
+        targetRotation = Quaternion.Euler(
+            _rb.rotation.eulerAngles.x,
+            targetRotation.eulerAngles.y,
+            _rb.rotation.eulerAngles.z
+        );
+
+        _rb.rotation = Quaternion.Slerp(
+            _rb.rotation,
+            targetRotation,
+            _rotateToMouseScale * Time.fixedDeltaTime
+        );
     }
 
     private void AdjustFallingSpeed()
@@ -102,6 +134,13 @@ public class PlayerMovement : MonoBehaviour
         _horizontalInput = Input.GetAxis("Horizontal");
         _verticalInput = Input.GetAxis("Vertical");
         _jumpKeyPressed = Input.GetKey(_jumpKeyCode);
+        _mousePosition = Input.mousePosition;
+        _mousePosition.z = 0;
+
+        Ray mouseWorldRay = mainCamera.ScreenPointToRay(_mousePosition);
+
+        if (Physics.Raycast(mouseWorldRay, out RaycastHit raycastHit))
+            _mouseWorldPosition = raycastHit.point;
     }
 
     void OnDrawGizmos()
