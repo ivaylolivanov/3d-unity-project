@@ -64,6 +64,10 @@ public class PlayerMovement : MonoBehaviour
 
         mainCamera = Camera.main;
         _jumpKeyPressed = false;
+    private void AdjustFallingSpeed()
+    {
+        if (_rb.velocity.y < 0)
+            _rb.velocity = Vector3.down * _fallSpeed;
     }
 
     private void RotateToMouse()
@@ -92,12 +96,6 @@ public class PlayerMovement : MonoBehaviour
             targetRotation,
             _rotateToMouseScale * Time.fixedDeltaTime
         );
-    }
-
-    private void AdjustFallingSpeed()
-    {
-        if (_rb.velocity.y < 0)
-            _rb.velocity = Vector3.down * _fallSpeed;
     }
 
     private void Move()
