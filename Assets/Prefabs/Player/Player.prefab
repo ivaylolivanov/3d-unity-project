@@ -219,6 +219,7 @@ MonoBehaviour:
   _shootInterval: 0.2
   _shootKeyCode: 323
   _bulletPrefabTemplate: {fileID: 4027143953485845044, guid: a95fbcb1381f9d09d87770ec59b35449, type: 3}
+  _shootForce: 50
 --- !u!54 &1646453727117071930
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utils;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
@@ -27,6 +28,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _shootInterval = 0.2f;
     [SerializeField] private KeyCode _shootKeyCode = KeyCode.Mouse0;
     [SerializeField] private Transform _bulletPrefabTemplate;
+    [SerializeField] private float _shootForce = 30f;
 
     // Movement
     private float _horizontalInput;
@@ -44,6 +46,7 @@ public class PlayerMovement : MonoBehaviour
     private float _nextShootTime;
 
     private Camera mainCamera;
+    private ObjectsPools _objectsPools;
 
     private Rigidbody _rb;
 
@@ -84,6 +87,10 @@ public class PlayerMovement : MonoBehaviour
         _jumpKeyPressed = false;
         _shootKeyPressed = false;
         _nextShootTime = 0;
+
+        _objectsPools = FindObjectOfType<ObjectsPools>();
+        if (_objectsPools == null)
+            Debug.LogError($"Failed to get ObjectsPools in {gameObject.name}");
     }
 
     private void AdjustFallingSpeed()
@@ -140,9 +147,18 @@ public class PlayerMovement : MonoBehaviour
 
     private void Shoot()
     {
-        Transform bullet = Instantiate(_bulletPrefabTemplate, transform);
+        Bullet bullet = _objectsPools.GetBulletInstance(_shootPoint.position);
+        if(bullet == null)
+            return;
+
         Rigidbody bulletRigidbody = bullet.GetComponent<Rigidbody>();
-        bulletRigidbody.AddForce(_shootPoint.forward * 100, ForceMode.Impulse);
+        if(bulletRigidbody == null)
+            return;
+
+        bulletRigidbody.AddForce(
+            _shootPoint.forward * _shootForce,
+            ForceMode.Impulse
+        );
 
         _nextShootTime = Time.time + _shootInterval;
     }
