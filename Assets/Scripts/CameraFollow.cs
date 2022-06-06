@@ -10,7 +10,7 @@ public class CameraFollow : MonoBehaviour
     private Transform target;
     private Vector3 smoothVelocity = Vector3.zero;
 
-    void Awake()
+    void OnEnable()
     {
         var player = FindObjectOfType<PlayerMovement>();
 
