@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    [SerializeField] private float smoothness = 0.125f;
-    [SerializeField] private Vector3 offset = new Vector3(-5, 10, 0);
+    [SerializeField] private float smoothness = 1.75f;
+    [SerializeField] private Vector3 offset = new Vector3(0, 10, 10);
+    [SerializeField] private Vector3 rotation = new Vector3(30, 0, 0);
 
     private Transform target;
+    private Vector3 initialOffset = Vector3.zero;
     private Vector3 smoothVelocity = Vector3.zero;
 
     void OnEnable()
@@ -21,9 +23,10 @@ public class CameraFollow : MonoBehaviour
         }
 
         target = player.transform;
+        initialOffset = transform.position - target.position;
     }
 
-    void LateUpdate()
+    void FixedUpdate()
     {
         if (target == null)
         {
@@ -31,16 +34,39 @@ public class CameraFollow : MonoBehaviour
             return;
         }
 
-        var desiredPosition = target.position + offset;
-        var smoothedPosition = Vector3.SmoothDamp(
-            transform.position,
-            desiredPosition,
-            ref smoothVelocity,
-            smoothness
+        float targetYRotationAngle = target.rotation.eulerAngles.y;
+        float targetHeight = target.position.y + offset.y;
+
+        float currentYRotationAngle = transform.eulerAngles.y;
+        float currentHeight = transform.position.y;
+
+        currentYRotationAngle = Mathf.LerpAngle (
+            currentYRotationAngle,
+            targetYRotationAngle,
+            smoothness * Time.deltaTime
         );
 
-        transform.position = smoothedPosition;
+        currentHeight = Mathf.Lerp(
+            currentHeight,
+            targetHeight,
+            smoothness * Time.deltaTime
+        );
 
-        transform.LookAt(target);
+        Quaternion currentRotation = Quaternion.Euler (
+            0,
+            currentYRotationAngle,
+            0
+        );
+
+        transform.position = target.position;
+        transform.position -= currentRotation * Vector3.forward * offset.z;
+
+        transform.position = new Vector3(
+            transform.position.x,
+            currentHeight,
+            transform.position.z
+        );
+
+        transform.LookAt (target);
     }
 }
