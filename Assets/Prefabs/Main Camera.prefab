@@ -96,5 +96,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da16d3daf79e553c19955c1ce3fa03a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  smoothness: 0.125
-  offset: {x: 0, y: 10, z: -10}
+  smoothness: 1.75
+  offset: {x: 0, y: 10, z: 10}
+  rotation: {x: 30, y: 0, z: 0}
+  heightOffset: 10
+  distanceOffset: 10
