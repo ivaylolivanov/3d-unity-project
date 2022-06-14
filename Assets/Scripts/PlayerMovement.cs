@@ -135,7 +135,7 @@ public class PlayerMovement : MonoBehaviour
             _verticalInput * _movementSpeed
         );
 
-        _rb.velocity = movementDirection;
+        _rb.velocity = _rb.rotation * movementDirection;
     }
 
     private void Jump()
