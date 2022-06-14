@@ -43,7 +43,7 @@ public class CameraFollow : MonoBehaviour
         currentYRotationAngle = Mathf.LerpAngle (
             currentYRotationAngle,
             targetYRotationAngle,
-            smoothness * Time.deltaTime
+            smoothness * Time.fixedDeltaTime
         );
 
         currentHeight = Mathf.Lerp(
