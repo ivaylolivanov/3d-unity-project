@@ -68,5 +68,11 @@ public class CameraFollow : MonoBehaviour
         );
 
         transform.LookAt (target);
+
+        transform.rotation = Quaternion.Euler(
+            rotationOffset.x,
+            transform.rotation.eulerAngles.y,
+            transform.rotation.eulerAngles.z
+        );
     }
 }
