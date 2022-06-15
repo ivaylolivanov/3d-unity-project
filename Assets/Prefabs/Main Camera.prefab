@@ -97,7 +97,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   smoothness: 1.75
-  offset: {x: 0, y: 10, z: 10}
-  rotation: {x: 30, y: 0, z: 0}
-  heightOffset: 10
-  distanceOffset: 10
+  offset: {x: 0, y: 15, z: 10}
+  rotationOffset: {x: 45, y: 0, z: 0}
