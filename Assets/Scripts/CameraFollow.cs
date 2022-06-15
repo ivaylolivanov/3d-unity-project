@@ -8,6 +8,8 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private Vector3 offset = new Vector3(0, 10, 10);
     [SerializeField] private Vector3 rotationOffset = new Vector3(30, 0, 0);
 
+    [SerializeField] private bool shouldFollowPlayerRotation = false;
+
     private Transform target;
     private Vector3 initialOffset = Vector3.zero;
     private Vector3 smoothVelocity = Vector3.zero;
@@ -59,7 +61,10 @@ public class CameraFollow : MonoBehaviour
         );
 
         transform.position = target.position;
-        transform.position -= currentRotation * Vector3.forward * offset.z;
+        if(shouldFollowPlayerRotation)
+            transform.position -= currentRotation * Vector3.forward * offset.z;
+        else
+            transform.position -= Vector3.forward * offset.z;
 
         transform.position = new Vector3(
             transform.position.x,
