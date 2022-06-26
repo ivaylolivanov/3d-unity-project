@@ -13,5 +13,6 @@ public class DeathCollider : MonoBehaviour
             return;
 
         health.TakeDamage(_instantDeathDamage);
+        Debug.Break();
     }
 }
