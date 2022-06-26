@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fd8b7f129b6614ebb44905bf39260cf, type: 3}
+  m_Name: MouseState
+  m_EditorClassIdentifier: 
+  _leftButton: {fileID: 11400000, guid: 4fdd2f9c1b8e7fdec8073cdc05e84555, type: 2}
+  _middleButton: {fileID: 11400000, guid: 3b57d9ff5b96c66c8b743cdcd34ffc88, type: 2}
+  _rightButton: {fileID: 11400000, guid: 5f8e74644561780ae8a84289e600ea8f, type: 2}
