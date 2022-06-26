@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    [SerializeField] private float smoothness = 1.75f;
-    [SerializeField] private Vector3 offset = new Vector3(0, 10, 10);
-    [SerializeField] private Vector3 rotationOffset = new Vector3(30, 0, 0);
+    [SerializeField] private float _smoothness = 1.75f;
+    [SerializeField] private Vector3 _offset = new Vector3(0, 10, 10);
+    [SerializeField] private Vector3 _rotationOffset = new Vector3(30, 0, 0);
 
-    [SerializeField] private bool shouldFollowPlayerRotation = false;
+    [SerializeField] private bool _shouldFollowPlayerRotation = false;
 
-    private Transform target;
-    private Vector3 initialOffset = Vector3.zero;
-    private Vector3 smoothVelocity = Vector3.zero;
+    private Transform _target;
+    private Vector3 _initialOffset = Vector3.zero;
+    private Vector3 _smoothVelocity = Vector3.zero;
 
     void OnEnable()
     {
@@ -24,20 +24,20 @@ public class CameraFollow : MonoBehaviour
             return;
         }
 
-        target = player.transform;
-        initialOffset = transform.position - target.position;
+        _target = player.transform;
+        _initialOffset = transform.position - _target.position;
     }
 
     void FixedUpdate()
     {
-        if (target == null)
+        if (_target == null)
         {
             Debug.LogError("Lost player.");
             return;
         }
 
-        float targetYRotationAngle = target.rotation.eulerAngles.y;
-        float targetHeight = target.position.y + offset.y;
+        float targetYRotationAngle = _target.rotation.eulerAngles.y;
+        float targetHeight = _target.position.y + _offset.y;
 
         float currentYRotationAngle = transform.eulerAngles.y;
         float currentHeight = transform.position.y;
@@ -45,13 +45,13 @@ public class CameraFollow : MonoBehaviour
         currentYRotationAngle = Mathf.LerpAngle (
             currentYRotationAngle,
             targetYRotationAngle,
-            smoothness * Time.fixedDeltaTime
+            _smoothness * Time.fixedDeltaTime
         );
 
         currentHeight = Mathf.Lerp(
             currentHeight,
             targetHeight,
-            smoothness * Time.deltaTime
+            _smoothness * Time.deltaTime
         );
 
         Quaternion currentRotation = Quaternion.Euler (
@@ -60,11 +60,11 @@ public class CameraFollow : MonoBehaviour
             0
         );
 
-        transform.position = target.position;
-        if(shouldFollowPlayerRotation)
-            transform.position -= currentRotation * Vector3.forward * offset.z;
+        transform.position = _target.position;
+        if(_shouldFollowPlayerRotation)
+            transform.position -= currentRotation * Vector3.forward * _offset.z;
         else
-            transform.position -= Vector3.forward * offset.z;
+            transform.position -= Vector3.forward * _offset.z;
 
         transform.position = new Vector3(
             transform.position.x,
@@ -72,10 +72,10 @@ public class CameraFollow : MonoBehaviour
             transform.position.z
         );
 
-        transform.LookAt (target);
+        transform.LookAt (_target);
 
         transform.rotation = Quaternion.Euler(
-            rotationOffset.x,
+            _rotationOffset.x,
             transform.rotation.eulerAngles.y,
             transform.rotation.eulerAngles.z
         );

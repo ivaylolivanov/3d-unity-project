@@ -12,12 +12,18 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _drag = 6f;
     [SerializeField] private float _fallSpeed = 10f;
 
+    [Space]
+    [Header("MouseState")]
+    [SerializeField] private MouseStateSO _mouseState;
+
     [Header("Movement")]
+    [SerializeField] private InputActionSO _inputAxisHorizontal;
+    [SerializeField] private InputActionSO _inputAxisVertical;
+    [SerializeField] private float _rotationSmoothness = 10f;
     [SerializeField] private float _movementSpeed = 8f;
-    [SerializeField] private float _rotateToMouseScale = 3f;
 
     [Header("Jump")]
-    [SerializeField] private KeyCode _jumpKeyCode = KeyCode.Space;
+    [SerializeField] private InputActionSO _inputActionJump;
     [SerializeField] private int _groundCheckLayer;
     [SerializeField] private Transform _groundCheckPoint;
     [SerializeField] private float _groundCheckRadius = 0.5f;
@@ -26,47 +32,34 @@ public class PlayerMovement : MonoBehaviour
     [Header("Shooting")]
     [SerializeField] private Transform _shootPoint;
     [SerializeField] private float _shootInterval = 0.2f;
-    [SerializeField] private KeyCode _shootKeyCode = KeyCode.Mouse0;
-    [SerializeField] private Transform _bulletPrefabTemplate;
+    [SerializeField] private InputActionSO  _inputActionShoot;
     [SerializeField] private float _shootForce = 30f;
 
-    // Movement
-    private float _horizontalInput;
-    private float _verticalInput;
-
-    // Jump
-    private bool _jumpKeyPressed;
-
-    // Mouse inputs
-    private Vector3 _mousePosition;
-    private Vector3 _mouseWorldPosition;
-
     // Shooting
-    private bool _shootKeyPressed;
     private float _nextShootTime;
 
-    private Camera mainCamera;
     private ObjectsPools _objectsPools;
 
     private Rigidbody _rb;
 
     void OnEnable() => Initialize();
-
-    void Update() => ReadInputs();
+    void Update() => HandleRotation(Time.deltaTime);
 
     void FixedUpdate()
     {
         bool isOnGround = IsOnGround();
 
         AdjustFallingSpeed();
-        RotateToMouse();
         Move();
 
-        if (_jumpKeyPressed && isOnGround)
+        if(_inputActionJump.WasDown() && isOnGround)
             Jump();
 
-        if (_shootKeyPressed && (Time.time >= _nextShootTime))
+        if (_inputActionShoot.IsDown() && (Time.time >= _nextShootTime))
+        {
+            RotateToMouse();
             Shoot();
+        }
     }
 
     private void Initialize()
@@ -83,9 +76,6 @@ public class PlayerMovement : MonoBehaviour
             _rb.drag = _drag;
         }
 
-        mainCamera = Camera.main;
-        _jumpKeyPressed = false;
-        _shootKeyPressed = false;
         _nextShootTime = 0;
 
         _objectsPools = FindObjectOfType<ObjectsPools>();
@@ -99,43 +89,42 @@ public class PlayerMovement : MonoBehaviour
             _rb.velocity = Vector3.down * _fallSpeed;
     }
 
-    private void RotateToMouse()
+    private void HandleRotation(float deltaTime)
     {
-        Vector3 playerToMouseDirection = _mouseWorldPosition - _rb.position;
-        float angle = Vector3.SignedAngle(
-            transform.forward,
-            playerToMouseDirection,
+        bool noDataFromInputAxes =
+            _inputAxisHorizontal.GetValueNormalized() == 0
+            && _inputAxisVertical.GetValueNormalized() == 0;
+
+        if (noDataFromInputAxes) return;
+
+        Quaternion lookRotation = Quaternion.LookRotation(
+            _rb.velocity,
             transform.up
         );
-
-        Quaternion targetRotation = Quaternion.LookRotation(
-            playerToMouseDirection,
-            transform.up
-        );
-
-        // Do rotation ONLY around the Y axis
-        targetRotation = Quaternion.Euler(
+        lookRotation = Quaternion.Euler(
             _rb.rotation.eulerAngles.x,
-            targetRotation.eulerAngles.y,
+            lookRotation.eulerAngles.y,
             _rb.rotation.eulerAngles.z
         );
 
-        _rb.rotation = Quaternion.Slerp(
+        Quaternion smoothedLookRotation = Quaternion.Slerp(
             _rb.rotation,
-            targetRotation,
-            _rotateToMouseScale * Time.fixedDeltaTime
+            lookRotation,
+            _rotationSmoothness * deltaTime
         );
+
+        _rb.rotation = smoothedLookRotation;
     }
 
     private void Move()
     {
         Vector3 movementDirection = new Vector3(
-            _horizontalInput * _movementSpeed,
+            _inputAxisHorizontal.GetValueNormalized()  * _movementSpeed,
             _rb.velocity.y,
-            _verticalInput * _movementSpeed
+            _inputAxisVertical.GetValueNormalized() * _movementSpeed
         );
 
-        _rb.velocity = _rb.rotation * movementDirection;
+        _rb.velocity = movementDirection;
     }
 
     private void Jump()
@@ -163,6 +152,30 @@ public class PlayerMovement : MonoBehaviour
         _nextShootTime = Time.time + _shootInterval;
     }
 
+    private void RotateToMouse()
+    {
+        Vector3 playerToMouseDirection = _mouseState.MouseWorldPosition - _rb.position;
+        float angle = Vector3.SignedAngle(
+            transform.forward,
+            playerToMouseDirection,
+            transform.up
+        );
+
+        Quaternion targetRotation = Quaternion.LookRotation(
+            playerToMouseDirection,
+            transform.up
+        );
+
+        // Do rotation ONLY around the Y axis
+        targetRotation = Quaternion.Euler(
+            _rb.rotation.eulerAngles.x,
+            targetRotation.eulerAngles.y,
+            _rb.rotation.eulerAngles.z
+        );
+
+        _rb.rotation = targetRotation;
+    }
+
     private bool IsOnGround()
     {
         bool result = Physics.CheckSphere(
@@ -172,22 +185,6 @@ public class PlayerMovement : MonoBehaviour
         );
 
         return result;
-    }
-
-    private void ReadInputs()
-    {
-        _horizontalInput = Input.GetAxis("Horizontal");
-        _verticalInput = Input.GetAxis("Vertical");
-        _jumpKeyPressed = Input.GetKey(_jumpKeyCode);
-        _mousePosition = Input.mousePosition;
-        _mousePosition.z = 0;
-
-        Ray mouseWorldRay = mainCamera.ScreenPointToRay(_mousePosition);
-
-        if (Physics.Raycast(mouseWorldRay, out RaycastHit raycastHit))
-            _mouseWorldPosition = raycastHit.point;
-
-        _shootKeyPressed = Input.GetKey(_shootKeyCode);
     }
 
     void OnDrawGizmos()

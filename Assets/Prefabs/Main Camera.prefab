@@ -96,6 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da16d3daf79e553c19955c1ce3fa03a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  smoothness: 1.75
-  offset: {x: 0, y: 15, z: 10}
-  rotationOffset: {x: 45, y: 0, z: 0}
+  _smoothness: 1.75
+  _offset: {x: 0, y: 15, z: 10}
+  _rotationOffset: {x: 45, y: 0, z: 0}
+  _shouldFollowPlayerRotation: 0
