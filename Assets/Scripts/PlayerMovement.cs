@@ -145,7 +145,7 @@ public class PlayerMovement : MonoBehaviour
             return;
 
         bulletRigidbody.AddForce(
-            _shootPoint.forward * _shootForce,
+            (_rb.rotation * Vector3.forward) * _shootForce,
             ForceMode.Impulse
         );
 
