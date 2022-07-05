@@ -14,6 +14,8 @@ public class Bullet : MonoBehaviour
     private ObjectsPools _objectsPools;
     private Rigidbody _rb;
 
+    private GameObject _currentOwner;
+
     private void Awake()
     {
         _objectsPools = FindObjectOfType<ObjectsPools>();
@@ -23,6 +25,8 @@ public class Bullet : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         if(_rb == null)
             Debug.LogError($"Failed to find Rigidbody in {gameObject.name}");
+
+        _currentOwner = null;
     }
 
     private void OnEnable()
@@ -31,6 +35,8 @@ public class Bullet : MonoBehaviour
         _activationTime = Time.time;
 
         _rb.velocity = Vector3.zero;
+
+        _currentOwner = null;
     }
 
     private void Update()
@@ -43,11 +49,34 @@ public class Bullet : MonoBehaviour
             Destroy();
     }
 
-    private void Destroy()
+    public void SetCurrentOwner(GameObject newOwner)
+        => _currentOwner = newOwner;
+
+    private void OnCollisionEnter(Collision collision)
     {
-        if(_objectsPools == null)
+        if(GameObject.ReferenceEquals(_currentOwner, collision.gameObject))
             return;
 
+        Health targetHealth = collision.gameObject.GetComponent<Health>();
+        if (targetHealth == null)
+        {
+            Destroy();
+            return;
+        }
+
+        targetHealth.TakeDamage(10);
+        Destroy();
+    }
+
+    private void Destroy()
+    {
+        if (_objectsPools == null)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+
+        _currentOwner = null;
         _objectsPools.DisableInstance(this);
     }
 }
