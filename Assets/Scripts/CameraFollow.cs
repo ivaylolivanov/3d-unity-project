@@ -16,7 +16,7 @@ public class CameraFollow : MonoBehaviour
 
     void OnEnable()
     {
-        var player = FindObjectOfType<PlayerMovement>();
+        Player player = FindObjectOfType<Player>();
 
         if (player == null)
         {
