@@ -16,7 +16,6 @@ public class EnemyFollow : MonoBehaviour
             Debug.Log($"Failed to find player in {gameObject.name}.");
     }
 
-    // Update is called once per frame
     void Update()
     {
         if(_player == null)
