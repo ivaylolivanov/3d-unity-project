@@ -19,7 +19,7 @@ public class EnemyFollow : MonoBehaviour
             Debug.Log($"Failed to find {_navAgent.GetType()} in {gameObject.name}.");
 
         _player = FindObjectOfType<Player>();
-        if(_player == null)
+        if (_player == null)
             Debug.Log($"Failed to find player in {gameObject.name}.");
     }
 
