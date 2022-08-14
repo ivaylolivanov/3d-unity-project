@@ -6,7 +6,8 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyFollow : MonoBehaviour
 {
-    [SerializeField] private float _viewRange = 10f;
+    [SerializeField] private float _attackRadius = 12f;
+    [SerializeField] private float _viewRadius = 17f;
 
     private NavMeshAgent _navAgent;
 
@@ -17,6 +18,8 @@ public class EnemyFollow : MonoBehaviour
         _navAgent = FindObjectOfType<NavMeshAgent>();
         if (_navAgent == null)
             Debug.Log($"Failed to find {_navAgent.GetType()} in {gameObject.name}.");
+        else
+            _navAgent.stoppingDistance = _attackRadius;
 
         _player = FindObjectOfType<Player>();
         if (_player == null)
