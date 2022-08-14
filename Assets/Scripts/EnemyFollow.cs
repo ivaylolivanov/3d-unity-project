@@ -15,7 +15,7 @@ public class EnemyFollow : MonoBehaviour
     void OnEnable()
     {
         _navAgent = FindObjectOfType<NavMeshAgent>();
-        if(_player == null)
+        if (_navAgent == null)
             Debug.Log($"Failed to find {_navAgent.GetType()} in {gameObject.name}.");
 
         _player = FindObjectOfType<Player>();
