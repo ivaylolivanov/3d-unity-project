@@ -39,4 +39,13 @@ public class EnemyFollow : MonoBehaviour
 
         _navAgent.SetDestination(_player.transform.position);
     }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, _viewRadius);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, _attackRadius);
+    }
 }
