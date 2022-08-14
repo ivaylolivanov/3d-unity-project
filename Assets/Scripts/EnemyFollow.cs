@@ -34,7 +34,7 @@ public class EnemyFollow : MonoBehaviour
         float distanceToPlayer = (transform.position - _player.transform.position)
             .sqrMagnitude;
 
-        if(distanceToPlayer > (_viewRadius * _viewRadius))
+        if (distanceToPlayer > (_viewRadius * _viewRadius))
             return;
 
         _navAgent.SetDestination(_player.transform.position);
