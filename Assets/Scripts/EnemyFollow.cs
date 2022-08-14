@@ -37,7 +37,27 @@ public class EnemyFollow : MonoBehaviour
         if (distanceToPlayer > (_viewRadius * _viewRadius))
             return;
 
+        if (!IsTargetOnLineOfSight())
+            return;
+
         _navAgent.SetDestination(_player.transform.position);
+    }
+
+    private bool IsTargetOnLineOfSight()
+    {
+        bool result = false;
+
+        RaycastHit hitInfo;
+        Physics.Raycast(
+            transform.position,
+            _player.transform.position - transform.position,
+            out hitInfo,
+            _viewRadius
+        );
+
+        result = Object.ReferenceEquals(hitInfo.transform.gameObject, _player.gameObject);
+
+        return result;
     }
 
     private void OnDrawGizmosSelected()
