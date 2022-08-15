@@ -38,6 +38,7 @@ namespace Utils
             var bulletInstance = _bulletPool.Dequeue();
             bulletInstance.gameObject.SetActive(true);
             bulletInstance.transform.position = position;
+            bulletInstance.Reset();
 
             return bulletInstance;
         }
