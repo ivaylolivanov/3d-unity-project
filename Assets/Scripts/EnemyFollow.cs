@@ -10,6 +10,7 @@ public class EnemyFollow : MonoBehaviour
     [SerializeField] private float _viewRadius = 17f;
 
     private NavMeshAgent _navAgent;
+    private Shooter _shooter;
 
     private GameObject _target;
 
@@ -17,13 +18,17 @@ public class EnemyFollow : MonoBehaviour
     {
         _navAgent = FindObjectOfType<NavMeshAgent>();
         if (_navAgent == null)
-            Debug.Log($"Failed to find {_navAgent.GetType()} in {gameObject.name}.");
+            Debug.Log($"Failed to find {_navAgent.GetType()} in enemy - {gameObject.name}.");
         else
             _navAgent.stoppingDistance = _attackRadius;
 
+        _shooter = FindObjectOfType<Shooter>();
+        if (_shooter == null)
+            Debug.Log($"Failed to find {_shooter.GetType()} in enemy - {gameObject.name}.");
+
         _target = FindObjectOfType<Player>()?.gameObject;
         if (_target == null)
-            Debug.Log($"Failed to find player in {gameObject.name}.");
+            Debug.Log($"Failed to find player in enemy - {gameObject.name}.");
     }
 
     void Update()
@@ -31,8 +36,9 @@ public class EnemyFollow : MonoBehaviour
         if (_target == null)
             return;
 
-        float distanceToPlayer = (transform.position - _target.transform.position)
-            .sqrMagnitude;
+        Vector3 directionToPlayer = _target.transform.position
+            - transform.position;
+        float distanceToPlayer = directionToPlayer.sqrMagnitude;
 
         if (distanceToPlayer > (_viewRadius * _viewRadius))
             return;
@@ -44,6 +50,21 @@ public class EnemyFollow : MonoBehaviour
 
         if (distanceToPlayer > (_attackRadius * _attackRadius))
             return;
+
+        Quaternion rotateTowardTarget = Quaternion.LookRotation(
+            directionToPlayer,
+            transform.up
+        );
+
+        var targetRotation = new Vector3(
+            transform.rotation.x,
+            rotateTowardTarget.eulerAngles.y,
+            transform.rotation.z
+        );
+
+        transform.rotation = Quaternion.Euler(targetRotation);
+
+        _shooter.Shoot();
     }
 
     private bool IsTargetOnLineOfSight()
