@@ -29,15 +29,7 @@ public class Bullet : MonoBehaviour
         _currentOwner = null;
     }
 
-    private void OnEnable()
-    {
-        _initialPoint = transform.position;
-        _activationTime = Time.time;
-
-        _rb.velocity = Vector3.zero;
-
-        _currentOwner = null;
-    }
+    private void OnEnable() => Reset();
 
     private void Update()
     {
@@ -47,6 +39,16 @@ public class Bullet : MonoBehaviour
 
         if((Time.time - _activationTime) >= _maxTimeActive)
             Destroy();
+    }
+
+    public void Reset()
+    {
+        _currentOwner = null;
+
+        _rb.velocity = Vector3.zero;
+
+        _initialPoint = transform.position;
+        _activationTime = Time.time;
     }
 
     public void SetCurrentOwner(GameObject newOwner)
