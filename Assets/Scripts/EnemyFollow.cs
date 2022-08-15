@@ -11,7 +11,7 @@ public class EnemyFollow : MonoBehaviour
 
     private NavMeshAgent _navAgent;
 
-    private Player _player;
+    private GameObject _target;
 
     void OnEnable()
     {
@@ -21,17 +21,17 @@ public class EnemyFollow : MonoBehaviour
         else
             _navAgent.stoppingDistance = _attackRadius;
 
-        _player = FindObjectOfType<Player>();
-        if (_player == null)
+        _target = FindObjectOfType<Player>()?.gameObject;
+        if (_target == null)
             Debug.Log($"Failed to find player in {gameObject.name}.");
     }
 
     void Update()
     {
-        if (_player == null)
+        if (_target == null)
             return;
 
-        float distanceToPlayer = (transform.position - _player.transform.position)
+        float distanceToPlayer = (transform.position - _target.transform.position)
             .sqrMagnitude;
 
         if (distanceToPlayer > (_viewRadius * _viewRadius))
@@ -40,7 +40,10 @@ public class EnemyFollow : MonoBehaviour
         if (!IsTargetOnLineOfSight())
             return;
 
-        _navAgent.SetDestination(_player.transform.position);
+        _navAgent.SetDestination(_target.transform.position);
+
+        if (distanceToPlayer > (_attackRadius * _attackRadius))
+            return;
     }
 
     private bool IsTargetOnLineOfSight()
@@ -50,12 +53,12 @@ public class EnemyFollow : MonoBehaviour
         RaycastHit hitInfo;
         Physics.Raycast(
             transform.position,
-            _player.transform.position - transform.position,
+            _target.transform.position - transform.position,
             out hitInfo,
             _viewRadius
         );
 
-        result = Object.ReferenceEquals(hitInfo.transform.gameObject, _player.gameObject);
+        result = Object.ReferenceEquals(hitInfo.transform.gameObject, _target);
 
         return result;
     }
