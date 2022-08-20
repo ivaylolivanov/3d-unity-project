@@ -50,6 +50,8 @@ public class Bullet : MonoBehaviour
         _activationTime = Time.time;
     }
 
+    public void SetMaxDistance(float maxDistance)
+        => _maxDistance = maxDistance;
     public void SetCurrentOwner(GameObject newOwner)
         => _currentOwner = newOwner;
 
