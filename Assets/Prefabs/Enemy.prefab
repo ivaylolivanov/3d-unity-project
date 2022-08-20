@@ -165,7 +165,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _shootPoint: {fileID: 359857712086769085}
   _shootInterval: 0.75
-  _shootForce: 30
+  _shootForce: 50
 --- !u!54 &1409658631736007394
 Rigidbody:
   m_ObjectHideFlags: 0

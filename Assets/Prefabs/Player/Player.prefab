@@ -244,23 +244,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ab03e145269261d8b2696530d1286ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _freezeRotation: 1
-  _mass: 10
-  _drag: 6
-  _fallSpeed: 10
-  _mouseState: {fileID: 11400000, guid: 6d4976bfcee6cb40385283bc62ce4d8f, type: 2}
-  _inputAxisHorizontal: {fileID: 11400000, guid: fff6f9e184757e346aa6e6b37cd5bce6, type: 2}
-  _inputAxisVertical: {fileID: 11400000, guid: d228c1054f53bbf569a5707fd38bb598, type: 2}
-  _rotationSmoothness: 10
-  _movementSpeed: 15
-  _inputActionJump: {fileID: 11400000, guid: fb1b5c8b0003f6610a9d99361f6c838f, type: 2}
-  _groundCheckLayer: 64
-  _groundCheckPoint: {fileID: 8052586934207936867}
-  _groundCheckRadius: 0.2
-  _jumpForce: 10
   _shootPoint: {fileID: 6281192369756096288}
   _shootInterval: 0.2
-  _inputActionShoot: {fileID: 11400000, guid: e4370aa2693a02e4d8b1ab9c6d7e37bb, type: 2}
   _shootForce: 50
 --- !u!114 &6795798406756311840
 MonoBehaviour:
@@ -274,12 +259,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 858d271377b48342d8858d56f3ad77ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inputAxisHorizontal: {fileID: 11400000, guid: fff6f9e184757e346aa6e6b37cd5bce6, type: 2}
-  _inputAxisVertical: {fileID: 11400000, guid: d228c1054f53bbf569a5707fd38bb598, type: 2}
-  _inputActionJump: {fileID: 11400000, guid: fb1b5c8b0003f6610a9d99361f6c838f, type: 2}
-  _fallSpeed: 10
+  _fallSpeed: 20
   _movementSpeed: 15
-  _jumpForce: 10
+  _jumpForce: 15
   _rotationSmoothness: 10
   _groundCheckLayer: 64
   _groundCheckPoint: {fileID: 8052586934207936867}
