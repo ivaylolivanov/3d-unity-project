@@ -33,11 +33,10 @@ public class Bullet : MonoBehaviour
 
     private void Update()
     {
-        float distance = (transform.position - _initialPoint).sqrMagnitude;
-        if(distance >= _maxDistance)
+        if (!Helpers.IsInRange(transform.position, _initialPoint, _maxDistance))
             Destroy();
 
-        if((Time.time - _activationTime) >= _maxTimeActive)
+        if ((Time.time - _activationTime) >= _maxTimeActive)
             Destroy();
     }
 
