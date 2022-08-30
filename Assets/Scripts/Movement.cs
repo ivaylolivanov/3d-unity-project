@@ -29,7 +29,6 @@ public class Movement : MonoBehaviour
     private void FixedUpdate()
     {
         HandleRotation(Time.fixedDeltaTime);
-        AdjustFallingSpeed();
     }
 #endregion
 
@@ -45,27 +44,9 @@ public class Movement : MonoBehaviour
         _rb.velocity = movementDirection;
     }
 
-    public void Jump()
-    {
-        if (!IsOnGround()) return;
-
-        Vector3 velocity = _rb.velocity;
-        velocity.y = _jumpForce;
-        _rb.velocity = new Vector3(_rb.velocity.x, _jumpForce, _rb.velocity.z);
-    }
 #endregion
 
 #region Private methods
-    private void AdjustFallingSpeed()
-    {
-        if (_rb.velocity.y >= -0.1f)
-            return;
-
-        _rb.velocity = Vector3.right * _rb.velocity.x
-            + Vector3.down * _fallSpeed
-            + Vector3.forward * _rb.velocity.z;
-    }
-
     private void HandleRotation(float deltaTime)
     {
         if(_rb.velocity.x == 0 && _rb.velocity.z == 0)
@@ -90,15 +71,8 @@ public class Movement : MonoBehaviour
         _rb.rotation = smoothedLookRotation;
     }
 
-    private bool IsOnGround()
     {
-        bool result = Physics.CheckSphere(
-            _groundCheckPoint.position,
-            _groundCheckRadius,
-            _groundCheckLayer
-        );
 
-        return result;
     }
 #endregion
 }

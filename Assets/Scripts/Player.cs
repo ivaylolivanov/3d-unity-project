@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
 
     // Private fields
     private Movement _movement;
+    private Jump _jump;
     private Shooter _shooter;
 
     // Unity components
@@ -35,8 +36,8 @@ public class Player : MonoBehaviour
             _inputAxisVertical.GetValueNormalized()
         );
 
-        if(_inputActionJump.WasDown())
-            _movement.Jump();
+        if(PlayerData.InputActionJump.WasDown())
+            _jump.DoJump();
 
         if (_inputActionShoot.IsDown())
         {
@@ -50,6 +51,10 @@ public class Player : MonoBehaviour
         _movement = GetComponent<Movement>();
         if(_movement == null)
             Debug.LogError($"Failed to get movement in {gameObject.name}");
+
+        _jump = GetComponent<Jump>();
+        if(_jump == null)
+            Debug.LogError($"Failed to get {_jump.GetType()} in {gameObject.name}");
 
         _shooter = GetComponent<Shooter>();
         if(_shooter == null)
