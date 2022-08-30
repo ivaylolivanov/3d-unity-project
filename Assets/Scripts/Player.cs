@@ -1,23 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Player : MonoBehaviour
+public class Player : Unit
 {
-    [Header("Stats")]
-    [SerializeField] private bool _freezeRotation = true;
-    [SerializeField] private float _mass = 10f;
-    [SerializeField] private float _drag = 6f;
-
-    [Space]
-    [Header("Controls")]
-    [SerializeField] private MouseStateSO _mouseState;
-    [Space]
-    [SerializeField] private InputActionSO _inputAxisHorizontal;
-    [SerializeField] private InputActionSO _inputAxisVertical;
-    [SerializeField] private InputActionSO _inputActionJump;
-    [SerializeField] private InputActionSO _inputActionShoot;
+    [SerializeField]
+    public PlayerData PlayerData => (PlayerData)base._unitData;
 
     // Private fields
     private Movement _movement;
@@ -32,14 +19,14 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         _movement.Move(
-            _inputAxisHorizontal.GetValueNormalized(),
-            _inputAxisVertical.GetValueNormalized()
+            PlayerData.InputAxisHorizontal.GetValueNormalized(),
+            PlayerData.InputAxisVertical.GetValueNormalized()
         );
 
         if(PlayerData.InputActionJump.WasDown())
             _jump.DoJump();
 
-        if (_inputActionShoot.IsDown())
+        if (PlayerData.InputActionShoot.IsDown())
         {
             RotateToMouse();
             _shooter.Shoot();
@@ -67,15 +54,17 @@ public class Player : MonoBehaviour
         }
         else
         {
-            _rb.freezeRotation = _freezeRotation;
-            _rb.mass = _mass;
-            _rb.drag = _drag;
+            _rb.freezeRotation = PlayerData.RbFreezeRotation;
+            _rb.mass = PlayerData.RbMass;
+            _rb.drag = PlayerData.RbDrag;
         }
     }
 
     private void RotateToMouse()
     {
-        Vector3 playerToMouseDirection = _mouseState.MouseWorldPosition - _rb.position;
+        Vector3 playerToMouseDirection =
+            PlayerData.MouseState.MouseWorldPosition
+            - _rb.position;
         float angle = Vector3.SignedAngle(
             transform.forward,
             playerToMouseDirection,
