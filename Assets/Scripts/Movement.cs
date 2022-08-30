@@ -5,40 +5,24 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Movement : MonoBehaviour
 {
-    [Header("Stats")]
-    [SerializeField] private float _fallSpeed = 10f;
-    [SerializeField] private float _movementSpeed = 8f;
-    [SerializeField] private float _jumpForce = 10f;
-    [SerializeField] private float _rotationSmoothness = 10f;
-
-    [Header("Jump")]
-    [SerializeField] private int _groundCheckLayer;
-    [SerializeField] private Transform _groundCheckPoint;
-    [SerializeField] private float _groundCheckRadius = 0.5f;
-
+    private Unit _unit;
     private Rigidbody _rb;
 
 #region MonoBehaviour methods
-    private void OnEnable()
-    {
-        _rb = GetComponent<Rigidbody>();
-        if (_rb == null)
-            Debug.LogError($"Failed to get rigidbody in {gameObject.name}");
-    }
+    private void OnEnable()    => Initialize();
 
-    private void FixedUpdate()
-    {
-        HandleRotation(Time.fixedDeltaTime);
-    }
+    private void FixedUpdate() => HandleRotation(Time.fixedDeltaTime);
+
 #endregion
 
 #region Public methods
+
     public void Move(float horizontal, float vertical)
     {
         Vector3 movementDirection = new Vector3(
-            horizontal * _movementSpeed,
+            horizontal * _unit.UnitData.MovementSpeed,
             _rb.velocity.y,
-            vertical * _movementSpeed
+            vertical * _unit.UnitData.MovementSpeed
         );
 
         _rb.velocity = movementDirection;
@@ -65,14 +49,22 @@ public class Movement : MonoBehaviour
         Quaternion smoothedLookRotation = Quaternion.Slerp(
             _rb.rotation,
             lookRotation,
-            _rotationSmoothness * deltaTime
+            _unit.UnitData.RotationSmoothness * deltaTime
         );
 
         _rb.rotation = smoothedLookRotation;
     }
 
+    private void Initialize()
     {
+        _unit = GetComponent<Unit>();
+        if (_unit == null)
+            Debug.LogError($"Failed to get {_unit.GetType()} in {gameObject.name}");
 
+        _rb = GetComponent<Rigidbody>();
+        if (_rb == null)
+            Debug.LogError($"Failed to get {_rb.GetType()} in {gameObject.name}");
     }
+
 #endregion
 }
