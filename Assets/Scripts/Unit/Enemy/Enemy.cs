@@ -5,17 +5,24 @@ using UnityEngine.AI;
 using Utils;
 
 [RequireComponent(typeof(NavMeshAgent))]
-public class Enemy : MonoBehaviour
+public class Enemy : Unit
 {
-    [SerializeField] private float _attackRadius = 12f;
-    [SerializeField] private float _viewRadius = 17f;
+    public EnemyData EnemyData => (EnemyData)base._unitData;
 
     private NavMeshAgent _navAgent;
+    private Movement _movement;
     private Shooter _shooter;
 
     private GameObject _target;
 
-    void OnEnable() => Initialize();
+#region MonoBehaviour methods
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+
+        Initialize();
+    }
 
     void Update()
     {
@@ -28,21 +35,24 @@ public class Enemy : MonoBehaviour
         );
         float distanceToTarget = directionToTarget.sqrMagnitude;
 
-        if (!Helpers.IsInRange(directionToTarget, _viewRadius))
+        if (!Helpers.IsInRange(directionToTarget, EnemyData.ViewRadius))
             return;
 
         if (!IsTargetOnLineOfSight())
             return;
 
-        _navAgent.SetDestination(_target.transform.position);
+        _movement.HandleRotation(Time.fixedDeltaTime, directionToTarget);
+        _movement.Move(_target.transform.position);
 
-        if (!Helpers.IsInRange(directionToTarget, _attackRadius))
+        if (!Helpers.IsInRange(directionToTarget, EnemyData.AttackRadius))
             return;
-
-        LookInDirection(directionToTarget);
 
         _shooter.Shoot();
     }
+
+#endregion
+
+#region Private methods
 
     private bool IsTargetOnLineOfSight()
     {
@@ -53,7 +63,7 @@ public class Enemy : MonoBehaviour
             transform.position,
             Helpers.Direction(transform.position, _target.transform.position),
             out hitInfo,
-            _viewRadius
+            EnemyData.ViewRadius
         );
 
         if (hitInfo.transform == null || hitInfo.transform?.gameObject == null)
@@ -64,31 +74,19 @@ public class Enemy : MonoBehaviour
         return result;
     }
 
-    private void LookInDirection(Vector3 directionToPlayer)
-    {
-        Quaternion lookAtTarget = Quaternion.LookRotation(
-            directionToPlayer,
-            transform.up
-        );
-
-        var desiredRotation = new Vector3(
-            transform.rotation.x,
-            lookAtTarget.eulerAngles.y,
-            transform.rotation.z
-        );
-
-        transform.rotation = Quaternion.Euler(desiredRotation);
-    }
-
     private void Initialize()
     {
-        _navAgent = FindObjectOfType<NavMeshAgent>();
+        _navAgent = GetComponent<NavMeshAgent>();
         if (_navAgent == null)
             Debug.LogError($"Failed to find {_navAgent.GetType()} in enemy - {gameObject.name}.");
         else
-            _navAgent.stoppingDistance = _attackRadius;
+            _navAgent.stoppingDistance = EnemyData.AttackRadius;
 
-        _shooter = FindObjectOfType<Shooter>();
+        _movement = GetComponent<Movement>();
+        if (_movement == null)
+            Debug.LogError($"Failed to find {_movement.GetType()} in enemy - {gameObject.name}.");
+
+        _shooter = GetComponent<Shooter>();
         if (_shooter == null)
             Debug.LogError($"Failed to find {_shooter.GetType()} in enemy - {gameObject.name}.");
 
@@ -100,10 +98,12 @@ public class Enemy : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, _viewRadius);
+        Gizmos.DrawWireSphere(transform.position, EnemyData.ViewRadius);
 
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, _attackRadius);
+        Gizmos.DrawWireSphere(transform.position, EnemyData.AttackRadius);
     }
+
+#endregion
 
 }

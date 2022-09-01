@@ -6,7 +6,7 @@ public class Jump : MonoBehaviour
     private Player _player;
     private Rigidbody _rb;
 
-    #region MonoBehaviour methods
+#region MonoBehaviour methods
 
     private void OnEnable()
     {
@@ -21,9 +21,9 @@ public class Jump : MonoBehaviour
 
     private void FixedUpdate() => AdjustFallingSpeed();
 
-    #endregion
+#endregion
 
-    #region Public methods
+#region Public methods
 
     public void DoJump()
     {
@@ -39,9 +39,9 @@ public class Jump : MonoBehaviour
         );
     }
 
-    #endregion
+#endregion
 
-    #region Private methods
+#region Private methods
 
     private void AdjustFallingSpeed()
     {
@@ -64,5 +64,5 @@ public class Jump : MonoBehaviour
         return result;
     }
 
-    #endregion
+#endregion
 }

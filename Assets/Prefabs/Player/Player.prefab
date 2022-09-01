@@ -168,6 +168,7 @@ GameObject:
   - component: {fileID: 7397831592268138511}
   - component: {fileID: 1646453727117071931}
   - component: {fileID: 6795798406756311840}
+  - component: {fileID: 7279096203451147096}
   - component: {fileID: 7807603120354643527}
   m_Layer: 0
   m_Name: Player
@@ -224,14 +225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6c5c14d5aabc4d3b82429ec9bc2b42b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _freezeRotation: 1
-  _mass: 10
-  _drag: 6
-  _mouseState: {fileID: 11400000, guid: 6d4976bfcee6cb40385283bc62ce4d8f, type: 2}
-  _inputAxisHorizontal: {fileID: 11400000, guid: fff6f9e184757e346aa6e6b37cd5bce6, type: 2}
-  _inputAxisVertical: {fileID: 11400000, guid: d228c1054f53bbf569a5707fd38bb598, type: 2}
-  _inputActionJump: {fileID: 11400000, guid: fb1b5c8b0003f6610a9d99361f6c838f, type: 2}
-  _inputActionShoot: {fileID: 11400000, guid: e4370aa2693a02e4d8b1ab9c6d7e37bb, type: 2}
+  _unitData: {fileID: 11400000, guid: e9ad4da38e9d17e9d9884b9b24826863, type: 2}
 --- !u!114 &1646453727117071931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -266,6 +260,18 @@ MonoBehaviour:
   _groundCheckLayer: 64
   _groundCheckPoint: {fileID: 8052586934207936867}
   _groundCheckRadius: 0.2
+--- !u!114 &7279096203451147096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1646453727117071933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 672376454c8864397bbba7a88603c5ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7807603120354643527
 MonoBehaviour:
   m_ObjectHideFlags: 0

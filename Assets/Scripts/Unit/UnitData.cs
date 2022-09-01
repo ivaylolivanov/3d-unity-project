@@ -4,6 +4,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "UnitData", menuName = "UnitData/UnitData", order = 3)]
 public class UnitData : ScriptableObject
 {
+    [Header("Unit data")]
+    [SerializeField] public int InitialHealth;
+
     [Header("Rigidbody data")]
     [SerializeField] public bool  RbFreezeRotation;
     [SerializeField] public float RbMass;
@@ -11,9 +14,9 @@ public class UnitData : ScriptableObject
 
     [Space]
     [Header("Movement data")]
-    [SerializeField] public float MovementSpeed = 8f;
-    [SerializeField] public float RotationSmoothness = 10f;
+    [SerializeField] public float MovementSpeed;
+    [SerializeField] public float RotationSmoothness;
     [Space]
-    [SerializeField] public float FallSpeed = 10f;
-    [SerializeField] public float JumpForce = 10f;
+    [SerializeField] public float FallSpeed;
+    [SerializeField] public float JumpForce;
 }

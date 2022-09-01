@@ -14,10 +14,21 @@ public class Player : Unit
     // Unity components
     private Rigidbody _rb;
 
-    private void OnEnable() => Initialize();
+#region MonoBehaviour methods
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+
+        Initialize();
+    }
 
     private void FixedUpdate()
     {
+        float fixedDeltaTime = Time.fixedDeltaTime;
+
+        _movement.HandleRotation(fixedDeltaTime, _rb.velocity);
+
         _movement.Move(
             PlayerData.InputAxisHorizontal.GetValueNormalized(),
             PlayerData.InputAxisVertical.GetValueNormalized()
@@ -28,10 +39,14 @@ public class Player : Unit
 
         if (PlayerData.InputActionShoot.IsDown())
         {
-            RotateToMouse();
+            RotateToMouse(fixedDeltaTime);
             _shooter.Shoot();
         }
     }
+
+#endregion
+
+#region Private methods
 
     private void Initialize()
     {
@@ -60,29 +75,14 @@ public class Player : Unit
         }
     }
 
-    private void RotateToMouse()
+    private void RotateToMouse(float fixedDeltaTime)
     {
         Vector3 playerToMouseDirection =
             PlayerData.MouseState.MouseWorldPosition
             - _rb.position;
-        float angle = Vector3.SignedAngle(
-            transform.forward,
-            playerToMouseDirection,
-            transform.up
-        );
 
-        Quaternion targetRotation = Quaternion.LookRotation(
-            playerToMouseDirection,
-            transform.up
-        );
-
-        // Do rotation ONLY around the Y axis
-        targetRotation = Quaternion.Euler(
-            _rb.rotation.eulerAngles.x,
-            targetRotation.eulerAngles.y,
-            _rb.rotation.eulerAngles.z
-        );
-
-        _rb.rotation = targetRotation;
+        _movement.HandleRotation(fixedDeltaTime, playerToMouseDirection, false);
     }
+
+#endregion
 }

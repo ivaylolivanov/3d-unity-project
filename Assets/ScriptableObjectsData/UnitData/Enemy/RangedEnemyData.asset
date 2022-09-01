@@ -12,3 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc583c9cd1b04dcb4a3a92456e2837f6, type: 3}
   m_Name: RangedEnemyData
   m_EditorClassIdentifier: 
+  RbFreezeRotation: 1
+  RbMass: 10
+  RbDrag: 6
+  MovementSpeed: 8
+  RotationSmoothness: 10
+  FallSpeed: 10
+  JumpForce: 10
+  AttackRadius: 15
+  ViewRadius: 20
+  ShootInterval: 0.75
+  ShootForce: 50

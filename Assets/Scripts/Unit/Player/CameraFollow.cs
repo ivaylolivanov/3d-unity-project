@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
+    // To do: See where the script goes and refactor later accordingly
+
     [SerializeField] private float _smoothness = 1.75f;
     [SerializeField] private Vector3 _offset = new Vector3(0, 10, 10);
     [SerializeField] private Vector3 _rotationOffset = new Vector3(30, 0, 0);

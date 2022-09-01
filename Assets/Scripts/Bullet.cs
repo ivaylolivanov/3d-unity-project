@@ -5,8 +5,8 @@ using Utils;
 
 public class Bullet : MonoBehaviour
 {
-    [SerializeField] float _maxDistance;
-    [SerializeField] float _maxTimeActive;
+    [SerializeField] private float _maxDistance;
+    [SerializeField] private float _maxTimeActive;
 
     private Vector3 _initialPoint;
     private float _activationTime;
@@ -15,6 +15,8 @@ public class Bullet : MonoBehaviour
     private Rigidbody _rb;
 
     private GameObject _currentOwner;
+
+#region MonoBehaviour mehtods
 
     private void Awake()
     {
@@ -40,6 +42,10 @@ public class Bullet : MonoBehaviour
             Destroy();
     }
 
+#endregion
+
+#region Public methods
+
     public void Reset()
     {
         _currentOwner = null;
@@ -54,6 +60,10 @@ public class Bullet : MonoBehaviour
         => _maxDistance = maxDistance;
     public void SetCurrentOwner(GameObject newOwner)
         => _currentOwner = newOwner;
+
+#endregion
+
+#region Private methods
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -82,4 +92,6 @@ public class Bullet : MonoBehaviour
         _currentOwner = null;
         _objectsPools.DisableInstance(this);
     }
+
+#endregion
 }
