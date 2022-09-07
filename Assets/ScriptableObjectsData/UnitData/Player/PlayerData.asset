@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82f8b4abf97fbd6a3a654ffb987936c4, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
+  InitialHealth: 100
   RbFreezeRotation: 1
   RbMass: 10
   RbDrag: 6
