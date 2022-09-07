@@ -8,11 +8,11 @@ public class DeathCollider : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Health health = collision.transform.GetComponent<Health>();
-        if(health == null)
+        Unit target = collision.transform.GetComponent<Unit>();
+        if(target == null)
             return;
 
-        health.TakeDamage(_instantDeathDamage);
+        target.TakeDamage(_instantDeathDamage);
         Debug.Break();
     }
 }
