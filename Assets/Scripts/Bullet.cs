@@ -72,14 +72,14 @@ public class Bullet : MonoBehaviour
         if(GameObject.ReferenceEquals(_currentOwner, collision.gameObject))
             return;
 
-        Health targetHealth = collision.gameObject.GetComponent<Health>();
-        if (targetHealth == null)
+        Unit target = collision.gameObject.GetComponent<Unit>();
+        if (target == null)
         {
             Destroy();
             return;
         }
 
-        targetHealth.TakeDamage(10);
+        target.TakeDamage(_damage);
         Destroy();
     }
 
