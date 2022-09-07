@@ -8,6 +8,8 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float _maxDistance;
     [SerializeField] private float _maxTimeActive;
 
+    private int _damage = 10;
+
     private Vector3 _initialPoint;
     private float _activationTime;
 
