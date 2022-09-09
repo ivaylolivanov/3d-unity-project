@@ -1,18 +1,30 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Game : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private Player _player;
+
+    private int _playerScore = 0;
+
+    public static UnityAction<int> OnUpdateScores;
+
+    private void OnEnable()
     {
-        
+        _player = FindObjectOfType<Player>();
+        if (_player == null)
+            Debug.LogError($"Failed to find {_player.GetType()}");
+
+        Enemy.OnEnemyDead += EnemyDied;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void EnemyDied()
     {
-        
+        ++_playerScore;
+        OnUpdateScores?.Invoke(_playerScore);
+        Debug.Log($">> Player score: {_playerScore}");
     }
 }
