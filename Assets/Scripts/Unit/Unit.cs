@@ -52,7 +52,7 @@ public class Unit : MonoBehaviour
         _healthUI.UpdateCurrentValue(_health);
     }
 
-    private void Die()
+    protected virtual void Die()
     {
         Destroy(gameObject);
     }
