@@ -53,6 +53,16 @@ public class Enemy : Unit
 
 #endregion
 
+#region Protected methods
+
+    protected override void Die()
+    {
+        OnEnemyDead?.Invoke();
+        base.Die();
+    }
+
+#endregion
+
 #region Private methods
 
     private bool IsTargetOnLineOfSight()
