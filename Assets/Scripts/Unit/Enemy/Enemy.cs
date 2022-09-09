@@ -1,11 +1,14 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 using Utils;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class Enemy : Unit
 {
     public EnemyData EnemyData => (EnemyData)base._unitData;
+
+    public static UnityAction OnEnemyDead;
 
     private NavMeshAgent _navAgent;
     private Movement _movement;
