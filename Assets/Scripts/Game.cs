@@ -25,6 +25,5 @@ public class Game : MonoBehaviour
     {
         ++_playerScore;
         OnUpdateScores?.Invoke(_playerScore);
-        Debug.Log($">> Player score: {_playerScore}");
     }
 }
