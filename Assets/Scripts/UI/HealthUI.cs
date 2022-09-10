@@ -7,7 +7,7 @@ public class HealthUI : MonoBehaviour
 
     private void OnEnable()
     {
-        _healthSlider = GetComponentInChildren<Slider>();
+        _healthSlider = GetComponent<Slider>();
         if (_healthSlider == null)
         {
             Debug.LogError($"Failed to find slider in HealthUI.cs of {gameObject.name}");
