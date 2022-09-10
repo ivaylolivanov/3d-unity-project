@@ -69,7 +69,7 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(GameObject.ReferenceEquals(_currentOwner, collision.gameObject))
+        if (GameObject.ReferenceEquals(_currentOwner, collision.gameObject))
             return;
 
         Unit target = collision.gameObject.GetComponent<Unit>();
