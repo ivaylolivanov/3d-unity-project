@@ -13,6 +13,8 @@ public class Bullet : MonoBehaviour
     private Vector3 _initialPoint;
     private float _activationTime;
 
+    private Vector3 _direction = Vector3.zero;
+
     private ObjectsPools _objectsPools;
     private Rigidbody _rb;
 
@@ -56,12 +58,16 @@ public class Bullet : MonoBehaviour
 
         _initialPoint = transform.position;
         _activationTime = Time.time;
+
+        _direction = Vector3.zero;
     }
 
     public void SetMaxDistance(float maxDistance)
         => _maxDistance = maxDistance;
     public void SetCurrentOwner(GameObject newOwner)
         => _currentOwner = newOwner;
+    public void SetDirection(Vector3 direction)
+        => _direction = direction;
 
 #endregion
 
