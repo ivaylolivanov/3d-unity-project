@@ -6,6 +6,8 @@ using Utils;
 
 public class Movement : MonoBehaviour
 {
+    [SerializeField] private float _navAgentDisableEdgeDistance = 1f;
+
     private Unit _unit;
     private Rigidbody _rb;
     private NavMeshAgent _navAgent;
