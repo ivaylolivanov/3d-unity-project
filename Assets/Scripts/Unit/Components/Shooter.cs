@@ -34,8 +34,7 @@ public class Shooter : MonoBehaviour
         bullet.SetCurrentOwner(gameObject);
 
         Rigidbody bulletRigidbody = bullet.GetComponent<Rigidbody>();
-        if(bulletRigidbody == null)
-            return;
+        if(bulletRigidbody == null) return;
 
         bulletRigidbody.AddForce(
             (_rb.rotation * Vector3.forward) * _shootForce,
