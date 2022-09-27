@@ -74,21 +74,20 @@ public class Movement : MonoBehaviour
             return;
         }
 
-        if (!_navAgent.enabled) return;
-
-        _navAgent.SetDestination(targetDestination);
-
+        _navAgent.enabled = true;
         NavMeshHit edgeHit;
         bool isEdgeFound = _navAgent.FindClosestEdge(out edgeHit);
         if (isEdgeFound)
         {
-            bool shouldDisableNavAgent = edgeHit.distance <= 0.5f;
+            bool targetNavAgentState = edgeHit.distance > _navAgentDisableEdgeDistance;
 
-            Debug.Log($"Disable nav agent !!!, distance {edgeHit.distance}");
+            _navAgent.enabled = targetNavAgentState;
 
-            if (shouldDisableNavAgent)
-                _navAgent.enabled = false;
+            if (!targetNavAgentState)
+                Debug.Log($"Disable nav agent !!!, distance {edgeHit.distance}");
         }
+
+        _navAgent?.SetDestination(targetDestination);
     }
 
 #endregion
