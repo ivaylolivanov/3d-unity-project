@@ -6,11 +6,11 @@ using UnityEngine.Events;
 
 public class Game : MonoBehaviour
 {
+    public static UnityAction<int> OnUpdateScores;
+
     private Player _player;
 
     private int _playerScore = 0;
-
-    public static UnityAction<int> OnUpdateScores;
 
     private void OnEnable()
     {
