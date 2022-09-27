@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Utils;
 
 public class Movement : MonoBehaviour
 {
@@ -71,7 +72,21 @@ public class Movement : MonoBehaviour
             return;
         }
 
+        if (!_navAgent.enabled) return;
+
         _navAgent.SetDestination(targetDestination);
+
+        NavMeshHit edgeHit;
+        bool isEdgeFound = _navAgent.FindClosestEdge(out edgeHit);
+        if (isEdgeFound)
+        {
+            bool shouldDisableNavAgent = edgeHit.distance <= 0.5f;
+
+            Debug.Log($"Disable nav agent !!!, distance {edgeHit.distance}");
+
+            if (shouldDisableNavAgent)
+                _navAgent.enabled = false;
+        }
     }
 
 #endregion
