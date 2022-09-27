@@ -7,6 +7,7 @@ public class Unit : MonoBehaviour
     public UnitData UnitData => _unitData;
 
     protected HealthUI _healthUI;
+    protected Animator _animator;
 
     protected int _health = 0;
     protected int _maxHealth = 0;
@@ -17,6 +18,7 @@ public class Unit : MonoBehaviour
         _maxHealth = _unitData.InitialHealth;
 
         _healthUI = GetComponentInChildren<HealthUI>();
+        _animator = GetComponent<Animator>();
 
         if (_healthUI == null)
         {
@@ -28,6 +30,8 @@ public class Unit : MonoBehaviour
             _healthUI.UpdateMaxValue(_maxHealth);
         }
     }
+
+    public Animator GetAnimator() => _animator;
 
     public void TakeDamage(int damage)
     {
