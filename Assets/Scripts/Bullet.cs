@@ -39,6 +39,10 @@ public class Bullet : MonoBehaviour
 
     private void Update()
     {
+        // Keep same speed and height
+        if (_direction != Vector3.zero)
+            _rb.velocity = _direction;
+
         if (!Helpers.IsInRange(transform.position, _initialPoint, _maxDistance))
             Destroy();
 
