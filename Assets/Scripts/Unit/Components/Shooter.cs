@@ -36,10 +36,12 @@ public class Shooter : MonoBehaviour
         Rigidbody bulletRigidbody = bullet.GetComponent<Rigidbody>();
         if(bulletRigidbody == null) return;
 
-        bulletRigidbody.AddForce(
-            (_rb.rotation * Vector3.forward) * _shootForce,
-            ForceMode.Impulse
+        Vector3 bulletVelocity = new Vector3(
+            (_rb.rotation * Vector3.forward).x * _shootForce,
+            bulletRigidbody.velocity.y,
+            (_rb.rotation * Vector3.forward).z * _shootForce
         );
+        bullet.SetDirection(bulletVelocity);
 
         _nextShootTime = Time.time + _shootInterval;
     }
