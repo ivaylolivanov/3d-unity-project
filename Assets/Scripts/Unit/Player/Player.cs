@@ -4,7 +4,7 @@ using UnityEngine;
 public class Player : Unit
 {
     [SerializeField]
-    public PlayerData PlayerData => (PlayerData)base._unitData;
+    public PlayerData PlayerData => (PlayerData)_unitData;
 
     // Private fields
     private Movement _movement;
@@ -21,6 +21,7 @@ public class Player : Unit
         base.OnEnable();
 
         Initialize();
+        Setup();
     }
 
     private void FixedUpdate()
@@ -64,15 +65,14 @@ public class Player : Unit
 
         _rb = GetComponent<Rigidbody>();
         if (_rb == null)
-        {
             Debug.LogError($"Failed to get rigidbody in {gameObject.name}");
-        }
-        else
-        {
-            _rb.freezeRotation = PlayerData.RbFreezeRotation;
-            _rb.mass = PlayerData.RbMass;
-            _rb.drag = PlayerData.RbDrag;
-        }
+    }
+
+    private void Setup()
+    {
+        if (_movement != null) _movement.Setup(_unitData,         _rb);
+        if (_jump     != null) _jump.Setup((PlayerData)_unitData, _rb);
+        if (_shooter  != null) _shooter.Setup(_unitData,          _rb);
     }
 
     private void RotateToMouse(float fixedDeltaTime)

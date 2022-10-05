@@ -6,58 +6,62 @@ using Utils;
 public class Shooter : MonoBehaviour
 {
     [SerializeField] private Transform _shootPoint;
-    [SerializeField] private float _shootInterval = 0.2f;
-    [SerializeField] private float _shootForce = 30f;
 
     // private fields
+    private UnitData _data;
     private Rigidbody _rb;
 
     private ObjectsPools _objectsPools;
     private float _nextShootTime;
 
-    #region MonoBehaviour
+#region MonoBehaviour
 
     void OnEnable() => Initialize();
 
-    #endregion
+#endregion
 
-    // Public methods
+#region Public methods
     public void Shoot()
     {
         if (Time.time < _nextShootTime)
             return;
 
         Bullet bullet = _objectsPools.GetBulletInstance(_shootPoint.position);
-        if(bullet == null)
+        if (bullet == null)
             return;
 
         bullet.SetCurrentOwner(gameObject);
 
         Rigidbody bulletRigidbody = bullet.GetComponent<Rigidbody>();
-        if(bulletRigidbody == null) return;
+        if (bulletRigidbody == null) return;
 
         Vector3 bulletVelocity = new Vector3(
-            (_rb.rotation * Vector3.forward).x * _shootForce,
+            (_rb.rotation * Vector3.forward).x * _data.AttackForce,
             bulletRigidbody.velocity.y,
-            (_rb.rotation * Vector3.forward).z * _shootForce
+            (_rb.rotation * Vector3.forward).z * _data.AttackForce
         );
         bullet.SetDirection(bulletVelocity);
 
-        _nextShootTime = Time.time + _shootInterval;
+        _nextShootTime = Time.time + _data.AttackInterval;
     }
 
-    private void Initialize()
+    public void Setup(UnitData data, Rigidbody rigidbody)
     {
-        _rb = GetComponent<Rigidbody>();
-        if (_rb == null)
-        {
-            Debug.LogError($"Failed to get rigidbody in {gameObject.name}");
-        }
-
-        _nextShootTime = 0;
-
-        _objectsPools = FindObjectOfType<ObjectsPools>();
-        if (_objectsPools == null)
-            Debug.LogError($"Failed to get ObjectsPools in {gameObject.name}");
+        _data = data;
+        _rb = rigidbody;
     }
+
+#endregion
+
+#region Private methods
+
+private void Initialize()
+{
+    _nextShootTime = 0;
+    _objectsPools = FindObjectOfType<ObjectsPools>();
+    if (_objectsPools == null)
+        Debug.LogError($"Failed to get ObjectsPools in {gameObject.name}");
+}
+
+#endregion
 }

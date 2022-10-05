@@ -2,36 +2,30 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
-    [SerializeField] protected UnitData _unitData;
-
     public UnitData UnitData => _unitData;
 
-    protected HealthUI _healthUI;
-    protected Animator _animator;
+    public Animator Animator { get; private set; }
 
-    protected int _health = 0;
+    [SerializeField] protected UnitData _unitData;
+
+    protected Rigidbody _rb;
+
+    protected HealthUI _healthUI;
+
+    protected int _health    = 0;
     protected int _maxHealth = 0;
+
+#region MonoBehaviour
 
     protected virtual void OnEnable()
     {
-        _health    = _unitData.InitialHealth;
-        _maxHealth = _unitData.InitialHealth;
-
-        _healthUI = GetComponentInChildren<HealthUI>();
-        _animator = GetComponent<Animator>();
-
-        if (_healthUI == null)
-        {
-            Debug.LogError($"Failed to get {_healthUI.GetType()} in {gameObject.name}");
-        }
-        else
-        {
-            _healthUI.UpdateCurrentValue(_health);
-            _healthUI.UpdateMaxValue(_maxHealth);
-        }
+        Initialize();
+        Setup();
     }
 
-    public Animator GetAnimator() => _animator;
+#endregion
+
+#region Public methods
 
     public void TakeDamage(int damage)
     {
@@ -56,8 +50,50 @@ public class Unit : MonoBehaviour
         _healthUI.UpdateCurrentValue(_health);
     }
 
+#endregion
+
+#region Protected methods
+
     protected virtual void Die()
     {
         Destroy(gameObject);
     }
+
+#endregion
+
+#region Private methods
+
+    private void Initialize()
+    {
+        _health    = _unitData.InitialHealth;
+        _maxHealth = _unitData.InitialHealth;
+
+        _healthUI = GetComponentInChildren<HealthUI>();
+        Animator  = GetComponent<Animator>();
+        _rb       = GetComponent<Rigidbody>();
+
+        if (_healthUI == null)
+            Debug.LogError($"Failed to get {_healthUI.GetType()} in {gameObject.name}");
+
+        if (_rb == null)
+            Debug.LogError($"Failed to get {_rb.GetType()} in {gameObject.name}");
+    }
+
+    private void Setup()
+    {
+        if (_healthUI != null)
+        {
+            _healthUI.UpdateCurrentValue(_health);
+            _healthUI.UpdateMaxValue(_maxHealth);
+        }
+
+        if (_rb != null)
+        {
+            _rb.freezeRotation = _unitData.RbFreezeRotation;
+            _rb.mass           = _unitData.RbMass;
+            _rb.drag           = _unitData.RbDrag;
+        }
+    }
+
+#endregion
 }

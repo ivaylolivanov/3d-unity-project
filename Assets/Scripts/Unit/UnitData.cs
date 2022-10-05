@@ -19,4 +19,9 @@ public class UnitData : ScriptableObject
     [Space]
     [SerializeField] public float FallSpeed;
     [SerializeField] public float JumpForce;
+
+    [Space]
+    [Header("AttackData")]
+    [SerializeField] public float AttackInterval;
+    [SerializeField] public float AttackForce;
 }

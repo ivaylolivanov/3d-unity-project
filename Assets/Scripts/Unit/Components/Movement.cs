@@ -9,12 +9,13 @@ public class Movement : MonoBehaviour
     [SerializeField] private float _navAgentDisableEdgeDistance = 1f;
 
     private Unit _unit;
+    private UnitData _data;
     private Rigidbody _rb;
     private NavMeshAgent _navAgent;
 
 #region MonoBehaviour methods
 
-    private void OnEnable() => Initialize();
+    // private void OnEnable() => Initialize();
 
 #endregion
 
@@ -88,6 +89,14 @@ public class Movement : MonoBehaviour
         }
 
         _navAgent?.SetDestination(targetDestination);
+    }
+
+    public void Setup(UnitData data, Rigidbody rigidbody,
+                      NavMeshAgent navMeshAgent = null)
+    {
+        _data     = data;
+        _rb       = rigidbody;
+        _navAgent = navMeshAgent;
     }
 
 #endregion

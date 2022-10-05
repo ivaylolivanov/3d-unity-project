@@ -10,6 +10,7 @@ public class Enemy : Unit
 
     public static UnityAction OnEnemyDead;
 
+    private Rigidbody _rb;
     private NavMeshAgent _navAgent;
     private Movement _movement;
     private Shooter _shooter;
@@ -23,6 +24,7 @@ public class Enemy : Unit
         base.OnEnable();
 
         Initialize();
+        Setup();
     }
 
     void Update()
@@ -90,8 +92,10 @@ public class Enemy : Unit
         _navAgent = GetComponent<NavMeshAgent>();
         if (_navAgent == null)
             Debug.LogError($"Failed to find {_navAgent.GetType()} in enemy - {gameObject.name}.");
-        else
-            _navAgent.stoppingDistance = EnemyData.AttackRadius;
+
+        _rb = GetComponent<Rigidbody>();
+        if (_rb == null)
+            Debug.LogError($"Failed to find {_rb.GetType()} in enemy - {gameObject.name}.");
 
         _movement = GetComponent<Movement>();
         if (_movement == null)
@@ -104,6 +108,15 @@ public class Enemy : Unit
         _target = FindObjectOfType<Player>()?.gameObject;
         if (_target == null)
             Debug.LogError($"Failed to find player in enemy - {gameObject.name}.");
+    }
+
+    private void Setup()
+    {
+        if (_navAgent != null)
+            _navAgent.stoppingDistance = EnemyData.AttackRadius;
+
+        if (_movement != null)
+            _movement.Setup(EnemyData, _rb, _navAgent);
     }
 
     private void OnDrawGizmosSelected()
