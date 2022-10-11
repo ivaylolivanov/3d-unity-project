@@ -11,9 +11,6 @@ public class Player : Unit
     private Jump _jump;
     private Shooter _shooter;
 
-    // Unity components
-    private Rigidbody _rb;
-
 #region MonoBehaviour methods
 
     protected override void OnEnable()
@@ -62,17 +59,13 @@ public class Player : Unit
         _shooter = GetComponent<Shooter>();
         if(_shooter == null)
             Debug.LogError($"Failed to get shooter in {gameObject.name}");
-
-        _rb = GetComponent<Rigidbody>();
-        if (_rb == null)
-            Debug.LogError($"Failed to get rigidbody in {gameObject.name}");
     }
 
     private void Setup()
     {
-        if (_movement != null) _movement.Setup(_unitData,         _rb);
-        if (_jump     != null) _jump.Setup((PlayerData)_unitData, _rb);
-        if (_shooter  != null) _shooter.Setup(_unitData,          _rb);
+        if (_movement != null) _movement.Setup(PlayerData, _rb);
+        if (_jump     != null) _jump.Setup(PlayerData,     _rb);
+        if (_shooter  != null) _shooter.Setup(PlayerData,  _rb);
     }
 
     private void RotateToMouse(float fixedDeltaTime)

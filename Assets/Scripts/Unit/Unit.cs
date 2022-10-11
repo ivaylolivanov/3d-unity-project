@@ -4,11 +4,10 @@ public class Unit : MonoBehaviour
 {
     public UnitData UnitData => _unitData;
 
-    public Animator Animator { get; private set; }
-
     [SerializeField] protected UnitData _unitData;
 
     protected Rigidbody _rb;
+    protected Animator  _animator;
 
     protected HealthUI _healthUI;
 
@@ -69,7 +68,7 @@ public class Unit : MonoBehaviour
         _maxHealth = _unitData.InitialHealth;
 
         _healthUI = GetComponentInChildren<HealthUI>();
-        Animator  = GetComponent<Animator>();
+        _animator = GetComponent<Animator>();
         _rb       = GetComponent<Rigidbody>();
 
         if (_healthUI == null)

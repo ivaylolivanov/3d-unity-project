@@ -66,6 +66,15 @@ public class Bullet : MonoBehaviour
         _direction = Vector3.zero;
     }
 
+    public void Setup(float maxDistance, GameObject owner, Vector3 direction,
+                      int damage)
+    {
+        _maxDistance  = maxDistance;
+        _currentOwner = owner;
+        _direction    = direction;
+        _damage       = damage;
+    }
+
     public void SetMaxDistance(float maxDistance)
         => _maxDistance = maxDistance;
     public void SetCurrentOwner(GameObject newOwner)
@@ -90,6 +99,14 @@ public class Bullet : MonoBehaviour
         }
 
         target.TakeDamage(_damage);
+
+        // Push the target with an impulse
+        // Rigidbody targetRigidbody = target.GetComponent<Rigidbody>();
+        // if (targetRigidbody != null)
+        // {
+        //     targetRigidbody.AddForce(_rb.velocity, ForceMode.Impulse);
+        // }
+
         Destroy();
     }
 

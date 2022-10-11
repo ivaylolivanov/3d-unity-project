@@ -8,14 +8,11 @@ public class Movement : MonoBehaviour
 {
     [SerializeField] private float _navAgentDisableEdgeDistance = 1f;
 
-    private Unit _unit;
     private UnitData _data;
     private Rigidbody _rb;
     private NavMeshAgent _navAgent;
 
 #region MonoBehaviour methods
-
-    // private void OnEnable() => Initialize();
 
 #endregion
 
@@ -41,7 +38,7 @@ public class Movement : MonoBehaviour
         Quaternion smoothedLookRotation = Quaternion.Slerp(
             _rb.rotation,
             lookRotation,
-            _unit.UnitData.RotationSmoothness * deltaTime
+            _data.RotationSmoothness * deltaTime
         );
 
         if (smooth)
@@ -59,9 +56,9 @@ public class Movement : MonoBehaviour
         }
 
         Vector3 movementDirection = new Vector3(
-            horizontal * _unit.UnitData.MovementSpeed,
+            horizontal * _data.MovementSpeed,
             _rb.velocity.y,
-            vertical * _unit.UnitData.MovementSpeed
+            vertical * _data.MovementSpeed
         );
 
         _rb.velocity = movementDirection;
@@ -102,21 +99,6 @@ public class Movement : MonoBehaviour
 #endregion
 
 #region Private methods
-
-    private void Initialize()
-    {
-        _unit = GetComponent<Unit>();
-        if (_unit == null)
-            Debug.LogError($"Failed to get {_unit.GetType()} in {gameObject.name}");
-
-        _rb = GetComponent<Rigidbody>();
-        if (_rb == null)
-            Debug.LogError($"Failed to get {_rb.GetType()} in {gameObject.name}");
-
-        _navAgent = GetComponent<NavMeshAgent>();
-        if (_rb == null)
-            Debug.LogError($"Failed to get {_rb.GetType()} in {gameObject.name}");
-    }
 
 #endregion
 }

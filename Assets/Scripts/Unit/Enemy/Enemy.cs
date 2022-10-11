@@ -10,7 +10,6 @@ public class Enemy : Unit
 
     public static UnityAction OnEnemyDead;
 
-    private Rigidbody _rb;
     private NavMeshAgent _navAgent;
     private Movement _movement;
     private Shooter _shooter;
@@ -93,10 +92,6 @@ public class Enemy : Unit
         if (_navAgent == null)
             Debug.LogError($"Failed to find {_navAgent.GetType()} in enemy - {gameObject.name}.");
 
-        _rb = GetComponent<Rigidbody>();
-        if (_rb == null)
-            Debug.LogError($"Failed to find {_rb.GetType()} in enemy - {gameObject.name}.");
-
         _movement = GetComponent<Movement>();
         if (_movement == null)
             Debug.LogError($"Failed to find {_movement.GetType()} in enemy - {gameObject.name}.");
@@ -117,6 +112,9 @@ public class Enemy : Unit
 
         if (_movement != null)
             _movement.Setup(EnemyData, _rb, _navAgent);
+
+        if (_shooter != null)
+            _shooter.Setup(EnemyData, _rb);
     }
 
     private void OnDrawGizmosSelected()
