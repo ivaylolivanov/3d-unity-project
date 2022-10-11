@@ -132,11 +132,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2393037567328751104, guid: ab2cb72e94d47fd48b108b7a24ccf4ed, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2393037567328751104, guid: ab2cb72e94d47fd48b108b7a24ccf4ed, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4736282265096271856, guid: ab2cb72e94d47fd48b108b7a24ccf4ed, type: 3}
       propertyPath: m_RootOrder
@@ -186,6 +186,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 4736282265096271867, guid: ab2cb72e94d47fd48b108b7a24ccf4ed, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ab2cb72e94d47fd48b108b7a24ccf4ed, type: 3}
 --- !u!4 &310760217 stripped
@@ -202,11 +206,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2393037567328751104, guid: ab2cb72e94d47fd48b108b7a24ccf4ed, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2393037567328751104, guid: ab2cb72e94d47fd48b108b7a24ccf4ed, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4736282265096271856, guid: ab2cb72e94d47fd48b108b7a24ccf4ed, type: 3}
       propertyPath: m_RootOrder
@@ -255,6 +259,10 @@ PrefabInstance:
     - target: {fileID: 4736282265096271867, guid: ab2cb72e94d47fd48b108b7a24ccf4ed, type: 3}
       propertyPath: m_Name
       value: Enemy (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4736282265096271867, guid: ab2cb72e94d47fd48b108b7a24ccf4ed, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ab2cb72e94d47fd48b108b7a24ccf4ed, type: 3}
@@ -419,6 +427,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 8829371953704076595, guid: ab2cb72e94d47fd48b108b7a24ccf4ed, type: 3}
+      propertyPath: _shootForce
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8829371953704076595, guid: ab2cb72e94d47fd48b108b7a24ccf4ed, type: 3}
+      propertyPath: _shootInterval
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ab2cb72e94d47fd48b108b7a24ccf4ed, type: 3}
 --- !u!4 &1203733294 stripped
@@ -435,11 +451,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2393037567328751104, guid: ab2cb72e94d47fd48b108b7a24ccf4ed, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2393037567328751104, guid: ab2cb72e94d47fd48b108b7a24ccf4ed, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4736282265096271856, guid: ab2cb72e94d47fd48b108b7a24ccf4ed, type: 3}
       propertyPath: m_RootOrder
@@ -488,6 +504,10 @@ PrefabInstance:
     - target: {fileID: 4736282265096271867, guid: ab2cb72e94d47fd48b108b7a24ccf4ed, type: 3}
       propertyPath: m_Name
       value: Enemy (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4736282265096271867, guid: ab2cb72e94d47fd48b108b7a24ccf4ed, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ab2cb72e94d47fd48b108b7a24ccf4ed, type: 3}
