@@ -32,8 +32,8 @@ public class Player : Unit
             PlayerData.InputAxisVertical.GetValueNormalized()
         );
 
-        if(PlayerData.InputActionJump.WasDown())
-            _jump.DoJump();
+        foreach (Ability ability in PlayerData.Abilities)
+            if (ability.CanActivate()) ability.Activate(gameObject);
 
         if (PlayerData.InputActionShoot.IsDown())
         {
