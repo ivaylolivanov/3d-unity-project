@@ -30,3 +30,5 @@ MonoBehaviour:
   GroundCheckLayer: 64
   GroundCheckOffset: {x: 0, y: 0.13, z: 0}
   GroundCheckRadius: 0.2
+  Abilities:
+  - {fileID: 11400000, guid: ccf4dc797c27a8001b84f534bb449942, type: 2}

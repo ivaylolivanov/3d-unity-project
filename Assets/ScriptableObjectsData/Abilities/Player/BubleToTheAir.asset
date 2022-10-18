@@ -13,5 +13,9 @@ MonoBehaviour:
   m_Name: BubleToTheAir
   m_EditorClassIdentifier: 
   _data:
-    Name: 
-    Button: {fileID: 0}
+    Name: Bubble to the Air
+    Cooldown: 3
+    Button: {fileID: 11400000, guid: fb1b5c8b0003f6610a9d99361f6c838f, type: 2}
+  _visual: {fileID: 2581293112993326524, guid: dc613b47f45cd0f98b66597c3aa900d7, type: 3}
+  _erectionSpeed: 0.35
+  _maxDuration: 3
