@@ -40,6 +40,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2581293112993326524}
+  - component: {fileID: 8102088136395578494}
+  - component: {fileID: 8792176073032414192}
   m_Layer: 0
   m_Name: SoapBubble
   m_TagString: Untagged
@@ -62,6 +64,31 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &8102088136395578494
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8574537569751473397}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8792176073032414192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8574537569751473397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea8da6ad1781bb04eb5a0b97d207b84f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8881598123683853260
 GameObject:
   m_ObjectHideFlags: 0
@@ -73,7 +100,6 @@ GameObject:
   - component: {fileID: 8827457079769797033}
   - component: {fileID: 4659057160814587335}
   - component: {fileID: 7137343397280814864}
-  - component: {fileID: 2923900083928301218}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -144,16 +170,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &2923900083928301218
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8881598123683853260}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
