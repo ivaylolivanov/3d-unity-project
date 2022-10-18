@@ -35,11 +35,6 @@ public class Player : Unit
         foreach (Ability ability in PlayerData.Abilities)
             if (ability.CanActivate()) ability.Activate(gameObject);
 
-        if (PlayerData.InputActionShoot.IsDown())
-        {
-            RotateToMouse(fixedDeltaTime);
-            _shooter.Shoot();
-        }
     }
 
 #endregion
