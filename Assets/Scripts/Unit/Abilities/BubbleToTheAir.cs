@@ -34,7 +34,6 @@ public class BubbleToTheAir : Ability
 
         bool isOutOfCooldown = (
             Time.time >= (_lastDeactivationTime + _data.Cooldown));
-        Debug.Log($"Time: {Time.time}, Finish: {_endDurationTime}, Last deactivation: {_lastDeactivationTime}, CD: {_data.Cooldown}");
 
         result = isOutOfCooldown && _data.Button.IsDown();
 
