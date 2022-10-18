@@ -9,7 +9,7 @@ namespace Utils
         [SerializeField] private Bullet _bulletPrefabTemplate;
         [SerializeField] private int _bulletPoolSize = 100;
 
-        private Queue<Bullet> _bulletPool;
+        private static Queue<Bullet> _bulletPool;
 
         protected void OnEnable()
         {
@@ -30,7 +30,7 @@ namespace Utils
             _bulletPool = null;
         }
 
-        public Bullet GetBulletInstance(Vector3 position)
+        public static Bullet GetBulletInstance(Vector3 position)
         {
             if(_bulletPool.Count <= 0)
                 return null;
@@ -43,7 +43,7 @@ namespace Utils
             return bulletInstance;
         }
 
-        public void DisableInstance(Bullet bulletInstance)
+        public static void DisableInstance(Bullet bulletInstance)
         {
             bulletInstance.transform.position = Vector3.zero;
             bulletInstance.gameObject.SetActive(false);
