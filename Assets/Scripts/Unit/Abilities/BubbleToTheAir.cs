@@ -1,4 +1,5 @@
 using UnityEngine;
+using Utils;
 
 [CreateAssetMenu(fileName = "Ability", menuName = "Abilities/Bubble to the air")]
 public class BubbleToTheAir : Ability
@@ -46,12 +47,20 @@ public class BubbleToTheAir : Ability
         if (casterRb == null) return;
 
         if (!_isActive && _visualInstance == null)
+        {
             _visualInstance = Instantiate(
                 _visual,
                 caster.transform.position + new Vector3(0, 1.4f, 0),
                 Quaternion.identity, caster.transform);
+
+            Bubble bubble = _visualInstance.GetComponent<Bubble>();
+            if (bubble != null)
+                bubble.OnTriggerEntered += BubbleTriggerEntered;
+        }
         else if (_visualInstance.gameObject.activeSelf == false)
+        {
             _visualInstance.gameObject.SetActive(true);
+        }
 
         if (!_isActive) _endDurationTime = Time.time + _maxDuration;
 
@@ -60,5 +69,17 @@ public class BubbleToTheAir : Ability
         Vector3 casterVelocity = casterRb.velocity;
         casterVelocity = new Vector3(0f, casterVelocity.y + _erectionSpeed, 0f);
         casterRb.velocity = casterVelocity;
+    }
+
+    private void BubbleTriggerEntered(GameObject other)
+    {
+        Bullet bullet = other.GetComponent<Bullet>();
+        if (bullet == null) return;
+
+        _visualInstance.gameObject.SetActive(false);
+        _isActive = false;
+        _lastDeactivationTime = Time.time;
+
+        ObjectsPools.DisableInstance(bullet);
     }
 }
