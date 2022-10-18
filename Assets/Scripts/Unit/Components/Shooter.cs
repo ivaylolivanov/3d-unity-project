@@ -11,7 +11,6 @@ public class Shooter : MonoBehaviour
     private UnitData _data;
     private Rigidbody _rb;
 
-    private ObjectsPools _objectsPools;
     private float _nextShootTime;
 
 #region MonoBehaviour
@@ -26,7 +25,7 @@ public class Shooter : MonoBehaviour
     {
         if (Time.time < _nextShootTime) return;
 
-        Bullet bullet = _objectsPools.GetBulletInstance(_shootPoint.position);
+        Bullet bullet = ObjectsPools.GetBulletInstance(_shootPoint.position);
         if (bullet == null) return;
 
         bullet.SetCurrentOwner(gameObject);
@@ -57,10 +56,6 @@ public class Shooter : MonoBehaviour
 private void Initialize()
 {
     _nextShootTime = 0;
-
-    _objectsPools = FindObjectOfType<ObjectsPools>();
-    if (_objectsPools == null)
-        Debug.LogError($"Failed to get ObjectsPools in {gameObject.name}");
 }
 
 #endregion
