@@ -15,7 +15,6 @@ public class Bullet : MonoBehaviour
 
     private Vector3 _direction = Vector3.zero;
 
-    private ObjectsPools _objectsPools;
     private Rigidbody _rb;
 
     private GameObject _currentOwner;
@@ -24,10 +23,6 @@ public class Bullet : MonoBehaviour
 
     private void Awake()
     {
-        _objectsPools = FindObjectOfType<ObjectsPools>();
-        if(_objectsPools == null)
-            Debug.LogError($"Failed to find ObjectsPools in {gameObject.name}");
-
         _rb = GetComponent<Rigidbody>();
         if(_rb == null)
             Debug.LogError($"Failed to find Rigidbody in {gameObject.name}");
@@ -112,14 +107,8 @@ public class Bullet : MonoBehaviour
 
     private void Destroy()
     {
-        if (_objectsPools == null)
-        {
-            Destroy(this.gameObject);
-            return;
-        }
-
         _currentOwner = null;
-        _objectsPools.DisableInstance(this);
+        ObjectsPools.DisableInstance(this);
     }
 
 #endregion
