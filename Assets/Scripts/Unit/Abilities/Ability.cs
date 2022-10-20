@@ -13,6 +13,8 @@ public class Ability : ScriptableObject
 {
     [SerializeField] protected AbilityData _data;
 
+    public virtual void Reset() { }
+
     public virtual bool CanActivate() => _data.Button.WasDown();
 
     public virtual void Activate(GameObject caster) { }

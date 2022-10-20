@@ -14,6 +14,13 @@ public class BubbleToTheAir : Ability
     private float _lastDeactivationTime = 0f;
     private float _endDurationTime = 0f;
 
+    public override void Reset()
+    {
+        _isActive = false;
+        _lastDeactivationTime = 0f;
+        _endDurationTime = 0f;
+    }
+
     public override bool CanActivate()
     {
         bool result = false;
