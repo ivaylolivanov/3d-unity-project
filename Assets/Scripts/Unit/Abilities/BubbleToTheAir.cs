@@ -10,7 +10,7 @@ public class BubbleToTheAir : Ability
 
     private Transform _visualInstance;
 
-    private bool _isActive = false;
+    private bool  _isActive = false;
     private float _lastDeactivationTime = 0f;
     private float _endDurationTime = 0f;
 
