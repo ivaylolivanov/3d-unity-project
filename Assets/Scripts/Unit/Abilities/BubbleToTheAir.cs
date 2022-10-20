@@ -78,7 +78,7 @@ public class BubbleToTheAir : Ability
         casterRb.velocity = casterVelocity;
     }
 
-    private void BubbleTriggerEntered(GameObject other)
+    private void BubbleTriggerEntered(GameObject other, GameObject bubble)
     {
         Bullet bullet = other.GetComponent<Bullet>();
         if (bullet == null) return;
