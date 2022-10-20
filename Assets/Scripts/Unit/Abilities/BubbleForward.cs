@@ -9,64 +9,67 @@ public class BubbleForward : Ability
 
     private Transform _visualInstance;
 
-    private bool _isActive = false;
-    private float _lastDeactivationTime = 0f;
-    private float _endDurationTime = 0f;
+    private float _nextAvailableTime = 0f;
+
+    public override void Reset()
+    {
+        _nextAvailableTime = 0f;
+    }
 
     public override bool CanActivate()
     {
         bool result = false;
 
-        // if (_visualInstance != null)
-        //     _visualInstance.gameObject.SetActive(false);
-
-        // The scriptable object saves data between playsessions. Therefore
-        // this snippet reset it, when the spell is blocked because of that.
-        if (_lastDeactivationTime >= Time.time)
-            _lastDeactivationTime = 0f;
-
-        if (_isActive && (_endDurationTime < Time.time))
-        {
-            _lastDeactivationTime = Time.time;
-            if (_visualInstance != null)
-                Destroy(_visualInstance.gameObject);
-            _isActive = false;
-            return result;
-        }
-
-        bool isOutOfCooldown = (
-            Time.time >= (_lastDeactivationTime + _data.Cooldown));
-        // Debug.Log($"Time: {Time.time}, Finish: {_endDurationTime}, Last deactivation: {_lastDeactivationTime}, CD: {_data.Cooldown}");
-
-        result = isOutOfCooldown && _data.Button.WasDown();
+        if (Time.time <= _nextAvailableTime) return result;
+        result = _data.Button.WasDown();
 
         return result;
     }
 
     public override void Activate(GameObject caster)
     {
-        if (!_isActive && _visualInstance == null)
+        Transform visualInstance = Instantiate(
+            _visual,
+            caster.transform.position + caster.transform.up * 1.4f + caster.transform.forward * 2f,
+            Quaternion.identity, caster.transform);
+
+        Rigidbody rb = visualInstance.gameObject.AddComponent(
+            typeof(Rigidbody))
+            as Rigidbody;
+        rb.useGravity = false;
+        rb.freezeRotation = true;
+
+        rb.AddForce(
+            caster.transform.forward * _movementSpeed,
+            ForceMode.Impulse);
+
+        Bubble bubble = visualInstance.GetComponent<Bubble>();
+        if (bubble != null)
         {
-            _visualInstance = Instantiate(
-                _visual,
-                caster.transform.position + caster.transform.up * 1.4f + caster.transform.forward * 2f,
-                Quaternion.identity, caster.transform);
-            Rigidbody rb = _visualInstance.gameObject.AddComponent(typeof(Rigidbody)) as Rigidbody;
-            rb.useGravity = false;
-            rb.freezeRotation = true;
-            rb.AddForce(caster.transform.forward * _movementSpeed, ForceMode.Impulse);
+            bubble.OnTriggerEntered += CaptureTarget;
+            bubble.OnTriggerExited += ReleaseTarget;
         }
 
-        if (!_isActive) _endDurationTime = Time.time + _maxDuration;
+        _nextAvailableTime = Time.time + _data.Cooldown;
+    }
 
-        _isActive = true;
+    private void CaptureTarget(GameObject target, GameObject bubble)
+    {
+        Rigidbody targetRb = target.GetComponent<Rigidbody>();
+        if (targetRb == null) return;
 
-        if (_visualInstance == null) return;
+        Rigidbody bubbleRb = bubble.GetComponent<Rigidbody>();
+        if (bubbleRb == null) return;
 
-        Bullet bubbleBullet = _visualInstance.GetComponent<Bullet>();
-        if (bubbleBullet == null) return;
+        targetRb.velocity = bubbleRb.velocity;
 
-        bubbleBullet.Reset();
-        bubbleBullet.Setup(100f, caster, caster.transform.forward, 0);
+        Unit targetUnit = target.GetComponent<Unit>();
+        if (targetUnit == null) return;
+    }
+
+    private void ReleaseTarget(GameObject target, GameObject bubble)
+    {
+        Unit targetUnit = target.GetComponent<Unit>();
+        if (targetUnit == null) return;
     }
 }
