@@ -64,12 +64,18 @@ public class BubbleForward : Ability
         targetRb.velocity = bubbleRb.velocity;
 
         Unit targetUnit = target.GetComponent<Unit>();
-        if (targetUnit == null) return;
+        if (targetUnit != null)
+        {
+            targetUnit.SetCurrentState(UnitState.InBubble);
+        }
     }
 
     private void ReleaseTarget(GameObject target, GameObject bubble)
     {
         Unit targetUnit = target.GetComponent<Unit>();
-        if (targetUnit == null) return;
+        if (targetUnit != null)
+        {
+            targetUnit.SetCurrentState(UnitState.None);
+        }
     }
 }

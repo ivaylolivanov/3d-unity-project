@@ -25,16 +25,21 @@ public class Player : Unit
     {
         float fixedDeltaTime = Time.fixedDeltaTime;
 
-        _movement.HandleRotation(fixedDeltaTime, _rb.velocity);
-
-        _movement.Move(
-            PlayerData.InputAxisHorizontal.GetValueNormalized(),
-            PlayerData.InputAxisVertical.GetValueNormalized()
-        );
-
         foreach (Ability ability in PlayerData.Abilities)
             if (ability.CanActivate()) ability.Activate(gameObject);
 
+        if (_currentState == UnitState.None)
+        {
+            _movement.HandleRotation(fixedDeltaTime, _rb.velocity);
+
+            _movement.Move(
+                PlayerData.InputAxisHorizontal.GetValueNormalized(),
+                PlayerData.InputAxisVertical.GetValueNormalized()
+            );
+        }
+        else if (_currentState == UnitState.None)
+        {
+        }
     }
 
 #endregion

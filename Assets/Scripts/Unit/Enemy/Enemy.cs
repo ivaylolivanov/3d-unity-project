@@ -28,6 +28,9 @@ public class Enemy : Unit
 
     void Update()
     {
+        if (_currentState == UnitState.InBubble)
+            return;
+
         if (_target == null)
             return;
 

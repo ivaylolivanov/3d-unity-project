@@ -14,6 +14,8 @@ public class Unit : MonoBehaviour
     protected int _health    = 0;
     protected int _maxHealth = 0;
 
+    protected UnitState _currentState = UnitState.None;
+
 #region MonoBehaviour
 
     protected virtual void OnEnable()
@@ -49,6 +51,9 @@ public class Unit : MonoBehaviour
         _healthUI.UpdateCurrentValue(_health);
     }
 
+    public void SetCurrentState(UnitState state)
+        => _currentState = state;
+
 #endregion
 
 #region Protected methods
@@ -64,6 +69,8 @@ public class Unit : MonoBehaviour
 
     private void Initialize()
     {
+        _currentState = UnitState.None;
+
         _health    = _unitData.InitialHealth;
         _maxHealth = _unitData.InitialHealth;
 
