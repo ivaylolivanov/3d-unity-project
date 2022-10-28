@@ -43,5 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 935ad49d71bc19c7ea057779efe7da63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bulletsParentName: BulletsParent
   _bulletPrefabTemplate: {fileID: 8694768064403257287, guid: a95fbcb1381f9d09d87770ec59b35449, type: 3}
   _bulletPoolSize: 100

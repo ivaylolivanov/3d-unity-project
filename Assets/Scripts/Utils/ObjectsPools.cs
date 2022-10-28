@@ -6,17 +6,23 @@ namespace Utils
 {
     public class ObjectsPools : MonoBehaviour
     {
+        [Header("Bullets pool")]
+        [SerializeField] private string _bulletsParentName;
         [SerializeField] private Bullet _bulletPrefabTemplate;
         [SerializeField] private int _bulletPoolSize = 100;
 
+        private GameObject _bulletsParent;
         private static Queue<Bullet> _bulletPool;
 
         protected void OnEnable()
         {
+            _bulletsParent ??= new GameObject(_bulletsParentName);
             _bulletPool = new Queue<Bullet>();
             for (int i = 0; i < _bulletPoolSize; ++i)
             {
-                Bullet bulletInstance = Instantiate(_bulletPrefabTemplate, transform);
+                Bullet bulletInstance = Instantiate(
+                    _bulletPrefabTemplate,
+                    _bulletsParent.transform);
                 bulletInstance.transform.position = Vector3.zero;
                 bulletInstance.gameObject.SetActive(false);
 
