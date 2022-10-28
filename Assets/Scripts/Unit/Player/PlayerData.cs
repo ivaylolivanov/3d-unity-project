@@ -16,7 +16,4 @@ public class PlayerData : UnitData
     [SerializeField] public int GroundCheckLayer;
     [SerializeField] public Vector3 GroundCheckOffset;
     [SerializeField] public float GroundCheckRadius;
-    [Space]
-    [Header("Abilities")]
-    [SerializeField] public Ability[] Abilities;
 }

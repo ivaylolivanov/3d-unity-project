@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 82f8b4abf97fbd6a3a654ffb987936c4, type: 3}
   m_Name: PlayerData
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier:
   InitialHealth: 100
   RbFreezeRotation: 1
   RbMass: 10
@@ -30,5 +30,3 @@ MonoBehaviour:
   GroundCheckLayer: 64
   GroundCheckOffset: {x: 0, y: 0.13, z: 0}
   GroundCheckRadius: 0.2
-  Abilities:
-  - {fileID: 11400000, guid: ccf4dc797c27a8001b84f534bb449942, type: 2}

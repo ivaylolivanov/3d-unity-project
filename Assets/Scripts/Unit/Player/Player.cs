@@ -25,9 +25,6 @@ public class Player : Unit
     {
         float fixedDeltaTime = Time.fixedDeltaTime;
 
-        foreach (Ability ability in PlayerData.Abilities)
-            if (ability.CanActivate()) ability.Activate(gameObject);
-
         if (_currentState == UnitState.None)
         {
             _movement.HandleRotation(fixedDeltaTime, _rb.velocity);
@@ -66,9 +63,6 @@ public class Player : Unit
         if (_movement != null) _movement.Setup(PlayerData, _rb);
         if (_jump     != null) _jump.Setup(PlayerData,     _rb);
         if (_shooter  != null) _shooter.Setup(PlayerData,  _rb);
-
-        foreach(Ability ability in PlayerData.Abilities)
-            ability.Reset();
     }
 
     private void RotateToMouse(float fixedDeltaTime)
