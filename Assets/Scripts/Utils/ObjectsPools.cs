@@ -32,7 +32,7 @@ namespace Utils
 
         public static Bullet GetBulletInstance(Vector3 position)
         {
-            if(_bulletPool.Count <= 0)
+            if (_bulletPool.Count <= 0)
                 return null;
 
             var bulletInstance = _bulletPool.Dequeue();
