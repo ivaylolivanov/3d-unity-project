@@ -4,6 +4,12 @@ using UnityEngine;
 
 namespace Utils
 {
+    public enum ObjectPoolType
+    {
+        Bullet,
+        Bubble,
+    }
+
     public class ObjectsPools : MonoBehaviour
     {
         [Header("Bullets pool")]
@@ -60,6 +66,24 @@ namespace Utils
             _bubblePool = null;
         }
 
+        public static GameObject GetInstanceAsGameObject(Vector3 position, ObjectPoolType type)
+        {
+            GameObject result = null;
+
+            switch(type)
+            {
+                case ObjectPoolType.Bullet:
+                {
+                    result = GetBulletInstance(position)?.gameObject;
+                } break;
+
+                case ObjectPoolType.Bubble:
+                {
+                    result = GetBubbleInstance(position)?.gameObject;
+                } break;
+            }
+
+            return result;
         }
 
         public static Bullet GetBulletInstance(Vector3 position)
