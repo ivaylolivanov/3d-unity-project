@@ -46,3 +46,6 @@ MonoBehaviour:
   _bulletsParentName: BulletsParent
   _bulletPrefabTemplate: {fileID: 8694768064403257287, guid: a95fbcb1381f9d09d87770ec59b35449, type: 3}
   _bulletPoolSize: 100
+  _bubblesParentName: BubblesParent
+  _bubblePrefabTemplate: {fileID: 8792176073032414192, guid: dc613b47f45cd0f98b66597c3aa900d7, type: 3}
+  _bubblePoolSize: 100

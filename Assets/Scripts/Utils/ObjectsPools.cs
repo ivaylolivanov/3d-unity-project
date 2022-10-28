@@ -11,8 +11,16 @@ namespace Utils
         [SerializeField] private Bullet _bulletPrefabTemplate;
         [SerializeField] private int _bulletPoolSize = 100;
 
+        [Space][Header("Bubbles pool")]
+        [SerializeField] private string _bubblesParentName;
+        [SerializeField] private Bubble _bubblePrefabTemplate;
+        [SerializeField] private int _bubblePoolSize = 100;
+
         private GameObject _bulletsParent;
         private static Queue<Bullet> _bulletPool;
+
+        private GameObject _bubblesParent;
+        private static Queue<Bubble> _bubblePool;
 
         protected void OnEnable()
         {
@@ -28,12 +36,30 @@ namespace Utils
 
                 _bulletPool.Enqueue(bulletInstance);
             }
+
+            _bubblesParent ??= new GameObject(_bubblesParentName);
+            _bubblePool = new Queue<Bubble>();
+            for (int i = 0; i < _bubblePoolSize; ++i)
+            {
+                Bubble bubbleInstance = Instantiate(
+                    _bubblePrefabTemplate,
+                    _bubblesParent.transform);
+                bubbleInstance.transform.position = Vector3.zero;
+                bubbleInstance.gameObject.SetActive(false);
+
+                _bubblePool.Enqueue(bubbleInstance);
+            }
         }
 
         protected void OnDisable()
         {
             _bulletPool.Clear();
             _bulletPool = null;
+
+            _bubblePool.Clear();
+            _bubblePool = null;
+        }
+
         }
 
         public static Bullet GetBulletInstance(Vector3 position)
@@ -49,6 +75,17 @@ namespace Utils
             return bulletInstance;
         }
 
+        public static Bubble GetBubbleInstance(Vector3 position)
+        {
+            if (_bubblePool.Count <= 0)
+                return null;
+
+            var bubbleInstance = _bubblePool.Dequeue();
+            bubbleInstance.gameObject.SetActive(true);
+            bubbleInstance.transform.position = position;
+
+            return bubbleInstance;
+        }
         public static void DisableInstance(Bullet bulletInstance)
         {
             bulletInstance.transform.position = Vector3.zero;
