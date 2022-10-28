@@ -86,6 +86,32 @@ namespace Utils
 
             return bubbleInstance;
         }
+
+        public static void DisableInstance<T>(T instance)
+        {
+            if (instance.GetType() == typeof(Bullet))
+            {
+                Bullet bulletInstance = instance as Bullet;
+
+                bulletInstance.transform.position = Vector3.zero;
+                bulletInstance.gameObject.SetActive(false);
+
+                _bulletPool.Enqueue(bulletInstance);
+            }
+            else if (instance.GetType() == typeof(Bubble))
+            {
+                Bubble bubbleInstance = instance as Bubble;
+
+                bubbleInstance.transform.position = Vector3.zero;
+                bubbleInstance.gameObject.SetActive(false);
+
+                bubbleInstance.OnTriggerEntered = null;
+                bubbleInstance.OnTriggerExited  = null;
+
+                _bubblePool.Enqueue(bubbleInstance);
+            }
+        }
+
         public static void DisableInstance(Bullet bulletInstance)
         {
             bulletInstance.transform.position = Vector3.zero;
