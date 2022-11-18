@@ -8,7 +8,6 @@ public class Jump : MonoBehaviour
 
 #region MonoBehaviour methods
 
-    private void OnEnable()    => Initialize();
     private void FixedUpdate() => AdjustFallingSpeed();
 
 #endregion
@@ -58,19 +57,6 @@ public class Jump : MonoBehaviour
         );
 
         return result;
-    }
-
-    private void Initialize()
-    {
-        Player player = GetComponent<Player>();
-        if (player == null)
-            Debug.LogError($"Failed to get {player.GetType()} in {gameObject.name}");
-        else
-            _data = player.PlayerData;
-
-        _rb = GetComponent<Rigidbody>();
-        if (_rb == null)
-            Debug.LogError($"Failed to get {_rb.GetType()} in {gameObject.name}");
     }
 
     #endregion
