@@ -28,11 +28,18 @@ public class Enemy : Unit
 
     void Update()
     {
-        if (_currentState == UnitState.InBubble)
-            return;
-
         if (_target == null)
             return;
+
+        if (IsInBubble)
+        {
+            _navAgent.enabled = false;
+            return;
+        }
+        else
+        {
+            _navAgent.enabled = true;
+        }
 
         Vector3 directionToTarget = Helpers.Direction(
             transform.position,

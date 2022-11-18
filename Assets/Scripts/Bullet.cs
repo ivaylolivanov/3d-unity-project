@@ -8,6 +8,8 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float _maxDistance;
     [SerializeField] private float _maxTimeActive;
 
+    public bool IsInBubble;
+
     private int _damage = 10;
 
     private Vector3 _initialPoint;
@@ -34,6 +36,12 @@ public class Bullet : MonoBehaviour
 
     private void Update()
     {
+        if (IsInBubble)
+        {
+            _rb.velocity = Vector3.zero;
+            return;
+        }
+
         // Keep same speed and height
         if (_direction != Vector3.zero)
             _rb.velocity = _direction;
@@ -51,6 +59,8 @@ public class Bullet : MonoBehaviour
 
     public void Reset()
     {
+        IsInBubble = false;
+
         _currentOwner = null;
 
         _rb.velocity = Vector3.zero;

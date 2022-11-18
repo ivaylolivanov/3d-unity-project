@@ -6,10 +6,16 @@ public class Player : Unit
     [SerializeField]
     public PlayerData PlayerData => (PlayerData)_unitData;
 
+    [Space]
+    [SerializeField]
+    private Transform _shootPoint;
+
     // Private fields
     private Movement _movement;
     private Jump _jump;
     private Shooter _shooter;
+    private JumpBubble _jumpBubble;
+    private ShootBubbles _shootBubbles;
 
 #region MonoBehaviour methods
 
@@ -25,18 +31,13 @@ public class Player : Unit
     {
         float fixedDeltaTime = Time.fixedDeltaTime;
 
-        if (_currentState == UnitState.None)
-        {
-            _movement.HandleRotation(fixedDeltaTime, _rb.velocity);
+        _movement.HandleRotation(fixedDeltaTime, _rb.velocity);
 
+        if (!IsInBubble)
             _movement.Move(
                 PlayerData.InputAxisHorizontal.GetValueNormalized(),
                 PlayerData.InputAxisVertical.GetValueNormalized()
             );
-        }
-        else if (_currentState == UnitState.None)
-        {
-        }
     }
 
 #endregion
@@ -56,6 +57,14 @@ public class Player : Unit
         _shooter = GetComponent<Shooter>();
         if(_shooter == null)
             Debug.LogError($"Failed to get shooter in {gameObject.name}");
+
+        _jumpBubble = GetComponent<JumpBubble>();
+        if (_jumpBubble == null)
+            Debug.LogError($"Failed to get {_jumpBubble.GetType()} in {gameObject.name}");
+
+        _shootBubbles = GetComponent<ShootBubbles>();
+        if (_jumpBubble == null)
+            Debug.LogError($"Failed to get {_shootBubbles.GetType()} in {gameObject.name}");
     }
 
     private void Setup()
@@ -63,6 +72,8 @@ public class Player : Unit
         if (_movement != null) _movement.Setup(PlayerData, _rb);
         if (_jump     != null) _jump.Setup(PlayerData,     _rb);
         if (_shooter  != null) _shooter.Setup(PlayerData,  _rb);
+        if (_jumpBubble != null) _jumpBubble.Setup(PlayerData, _rb, _jump, this);
+        if (_shootBubbles != null) _shootBubbles.Setup(PlayerData, _rb, _shootPoint.position);
     }
 
     private void RotateToMouse(float fixedDeltaTime)
