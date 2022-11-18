@@ -6,6 +6,8 @@ public class Unit : MonoBehaviour
 
     [SerializeField] protected UnitData _unitData;
 
+    public bool IsInBubble;
+
     protected Rigidbody _rb;
     protected Animator  _animator;
 
@@ -13,8 +15,6 @@ public class Unit : MonoBehaviour
 
     protected int _health    = 0;
     protected int _maxHealth = 0;
-
-    protected UnitState _currentState = UnitState.None;
 
 #region MonoBehaviour
 
@@ -51,9 +51,6 @@ public class Unit : MonoBehaviour
         _healthUI.UpdateCurrentValue(_health);
     }
 
-    public void SetCurrentState(UnitState state)
-        => _currentState = state;
-
 #endregion
 
 #region Protected methods
@@ -69,10 +66,10 @@ public class Unit : MonoBehaviour
 
     private void Initialize()
     {
-        _currentState = UnitState.None;
-
         _health    = _unitData.InitialHealth;
         _maxHealth = _unitData.InitialHealth;
+
+        IsInBubble = false;
 
         _healthUI = GetComponentInChildren<HealthUI>();
         _animator = GetComponent<Animator>();
