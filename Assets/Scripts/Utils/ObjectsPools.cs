@@ -2,146 +2,107 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+using Object = System.Object;
+
 namespace Utils
 {
-    public enum ObjectPoolType
-    {
-        Bullet,
-        Bubble,
-    }
-
     public class ObjectsPools : MonoBehaviour
     {
         [Header("Bullets pool")]
         [SerializeField] private string _bulletsParentName;
         [SerializeField] private Bullet _bulletPrefabTemplate;
-        [SerializeField] private int _bulletPoolSize = 100;
+        [SerializeField] private uint _bulletPoolSize = 100;
 
         [Space][Header("Bubbles pool")]
         [SerializeField] private string _bubblesParentName;
         [SerializeField] private Bubble _bubblePrefabTemplate;
-        [SerializeField] private int _bubblePoolSize = 100;
+        [SerializeField] private uint _bubblePoolSize = 100;
 
         private GameObject _bulletsParent;
-        private static Queue<Bullet> _bulletPool;
-
         private GameObject _bubblesParent;
-        private static Queue<Bubble> _bubblePool;
+
+        private static Dictionary<Type, Queue<Object>> _pools;
 
         protected void OnEnable()
         {
             _bulletsParent ??= new GameObject(_bulletsParentName);
-            _bulletPool = new Queue<Bullet>();
-            for (int i = 0; i < _bulletPoolSize; ++i)
-            {
-                Bullet bulletInstance = Instantiate(
-                    _bulletPrefabTemplate,
-                    _bulletsParent.transform);
-                bulletInstance.transform.position = Vector3.zero;
-                bulletInstance.gameObject.SetActive(false);
-
-                _bulletPool.Enqueue(bulletInstance);
-            }
+            _bulletsParent.transform.SetParent(transform);
 
             _bubblesParent ??= new GameObject(_bubblesParentName);
-            _bubblePool = new Queue<Bubble>();
-            for (int i = 0; i < _bubblePoolSize; ++i)
-            {
-                Bubble bubbleInstance = Instantiate(
-                    _bubblePrefabTemplate,
-                    _bubblesParent.transform);
-                bubbleInstance.transform.position = Vector3.zero;
-                bubbleInstance.gameObject.SetActive(false);
+            _bubblesParent.transform.SetParent(transform);
 
-                _bubblePool.Enqueue(bubbleInstance);
-            }
+            _pools = new Dictionary<Type, Queue<Object>>();
+            CreateAndFillPool<Bullet>(
+                _bulletPrefabTemplate,
+                _bulletsParent.transform,
+                _bulletPoolSize);
+
+            CreateAndFillPool<Bubble>(
+                _bubblePrefabTemplate,
+                _bubblesParent.transform,
+                _bubblePoolSize);
         }
 
         protected void OnDisable()
         {
-            _bulletPool.Clear();
-            _bulletPool = null;
-
-            _bubblePool.Clear();
-            _bubblePool = null;
+            _pools.Clear();
+            _pools = null;
         }
 
-        public static GameObject GetInstanceAsGameObject(Vector3 position, ObjectPoolType type)
+        public static T GetInstance<T>(Vector3 position)
+            where T : MonoBehaviour
         {
-            GameObject result = null;
+            var instance = default(T);
 
-            switch(type)
-            {
-                case ObjectPoolType.Bullet:
-                {
-                    result = GetBulletInstance(position)?.gameObject;
-                } break;
+            Type type = typeof(T);
 
-                case ObjectPoolType.Bubble:
-                {
-                    result = GetBubbleInstance(position)?.gameObject;
-                } break;
-            }
+            if (!_pools.ContainsKey(type))
+                return instance;
 
-            return result;
-        }
+            if (_pools[type].Count <= 0)
+                return instance;
 
-        public static Bullet GetBulletInstance(Vector3 position)
-        {
-            if (_bulletPool.Count <= 0)
-                return null;
+            instance = (T)_pools[type].Dequeue();
+            instance.gameObject.SetActive(true);
+            instance.transform.position = position;
+            if (type == typeof(Bullet))
+                (instance as Bullet).Reset();
 
-            var bulletInstance = _bulletPool.Dequeue();
-            bulletInstance.gameObject.SetActive(true);
-            bulletInstance.transform.position = position;
-            bulletInstance.Reset();
-
-            return bulletInstance;
-        }
-
-        public static Bubble GetBubbleInstance(Vector3 position)
-        {
-            if (_bubblePool.Count <= 0)
-                return null;
-
-            var bubbleInstance = _bubblePool.Dequeue();
-            bubbleInstance.gameObject.SetActive(true);
-            bubbleInstance.transform.position = position;
-
-            return bubbleInstance;
+            return instance;
         }
 
         public static void DisableInstance<T>(T instance)
+            where T : MonoBehaviour
         {
-            if (instance.GetType() == typeof(Bullet))
-            {
-                Bullet bulletInstance = instance as Bullet;
+            Type type = typeof(T);
 
-                bulletInstance.transform.position = Vector3.zero;
-                bulletInstance.gameObject.SetActive(false);
+            if (!_pools.ContainsKey(type))
+                return;
 
-                _bulletPool.Enqueue(bulletInstance);
-            }
-            else if (instance.GetType() == typeof(Bubble))
-            {
-                Bubble bubbleInstance = instance as Bubble;
+            if (_pools[type] == null)
+                _pools[type] = new Queue<Object>();
 
-                bubbleInstance.transform.position = Vector3.zero;
-                bubbleInstance.gameObject.SetActive(false);
+            // instance.transform.position = Vector3.zero;
+            instance.gameObject.SetActive(false);
 
-                bubbleInstance.OnTriggerEntered = null;
-                bubbleInstance.OnTriggerExited  = null;
-
-                _bubblePool.Enqueue(bubbleInstance);
-            }
+            _pools[type].Enqueue(instance);
         }
 
-        public static void DisableInstance(Bullet bulletInstance)
+        private void CreateAndFillPool<T>(MonoBehaviour template,
+                                          Transform parent, uint count)
         {
-            bulletInstance.transform.position = Vector3.zero;
-            bulletInstance.gameObject.SetActive(false);
+            Type type = typeof(T);
 
-            _bulletPool.Enqueue(bulletInstance);
+            _pools.Add(type, new Queue<Object>());
+
+            for (int i = 0; i < count; ++i)
+            {
+                var instance = Instantiate(template, parent.transform);
+                instance.transform.position = Vector3.zero;
+                instance.gameObject.SetActive(false);
+
+                _pools[type].Enqueue((Object)instance);
+            }
         }
     }
 }
