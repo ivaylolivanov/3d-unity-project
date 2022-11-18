@@ -25,7 +25,7 @@ public class Shooter : MonoBehaviour
     {
         if (Time.time < _nextShootTime) return;
 
-        Bullet bullet = ObjectsPools.GetBulletInstance(_shootPoint.position);
+        Bullet bullet = ObjectsPools.GetInstance<Bullet>(_shootPoint.position);
         if (bullet == null) return;
 
         bullet.SetCurrentOwner(gameObject);
